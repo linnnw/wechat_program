@@ -1,0 +1,14 @@
+<!-- <scroll-view class="scroll" scroll-x="false" scroll-y="true" bindscrolltoupper="" bindscrolltolower="load"
+    bindscroll="" enable-back-to-top="true">
+    <morecponentday day="{{day}}">
+    </morecponentday>
+</scroll-view> -->
+
+<wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+    bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+    <view class="nodata" wx:if="{{show}}">没有数据...</view>
+
+    <morecponentday day="{{day}}"/>
+
+  </wux-refresher>

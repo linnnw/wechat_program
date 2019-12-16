@@ -1,0 +1,19 @@
+<view class="worklogin">
+
+
+  <view class="img">
+    <image class="" src="/assets/icons/worklogin.jpg" mode="aspectFill" lazy-load="false" binderror="" bindload="">
+
+    </image>
+  </view>
+
+  <view class="loginform" >
+    <form class="login" bindsubmit="formSubmit">
+      <text class="iconfon">登录名:</text> <input type="text" bindinput="user" value="{{user}}" name="user"/>
+      <text class="iconfon1">密码:</text> <input type="password" bindinput="pwd" value="{{pwd}}" name="pwd"/>
+      <view class="option">
+        <button size="mini" class="band" formType="submit">绑定</button><button size="mini" bindtap="test" class="return">返回</button>
+      </view>
+    </form>
+  </view>
+</view>

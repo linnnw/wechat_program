@@ -1,0 +1,4 @@
+<view class="info_more">
+    <morecponent real="{{real}}"></morecponent>
+    <button class="btn" size='mini' data-devid_company="{{real.devid_company}}" bind:tap='more'>更多记录</button>
+</view>

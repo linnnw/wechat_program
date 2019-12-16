@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/login",
+    "pages/statement/statement",
+    "pages/order/order",
+    "pages/info/info",
+    "pages/warn/warn",
+    "pages/setup/setup",
+    "pages/routePage/info-more/info-more",
+    "pages/routePage/info-more-day/info-more-day",
+    "pages/routePage/user/user",
+    "pages/routePage/printer/printer",
+    "pages/routePage/box/box",
+    "pages/workRoute/fandanmsg/fandanmsg"
+  ],
+  "tabBar": {
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/statement/statement"
+      },
+      {
+        "pagePath": "pages/order/order"
+      },
+      {
+        "pagePath": "pages/info/info"
+      },
+      {
+        "pagePath": "pages/warn/warn"
+      },
+      {
+        "pagePath": "pages/setup/setup"
+      }
+      
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "易抄云",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {}
+}

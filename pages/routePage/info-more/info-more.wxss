@@ -1,0 +1,11 @@
+/* pages/infomore/infomore.wxss */
+.info_more {
+    padding-bottom: 150rpx;
+}
+.btn {
+    color: #5e5e5e;
+    border: 1px solid #f0f0f0;
+    box-shadow: 1px 2px 5px rgba(111, 111, 111, .5);
+    margin-left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,45 @@
+.fandandata {
+    margin: 85rpx 0;
+}
+.fandantitle {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.fandantitle .iconfont {
+    color: #fc892c;
+    font-size: 36rpx;
+    font-weight: 700;
+    margin-left: 15rpx;
+}
+.timeitem {
+    position: relative;
+    border-left: 6rpx solid #e4e7ed;
+    display: inline-block;
+    margin-left: 240rpx;
+    margin-bottom: 30rpx;
+}
+.dot {
+    position: absolute;
+    left: -18rpx;
+    top: -30rpx;
+    width: 30rpx;
+    height: 30rpx;
+    border: 6rpx solid #36a5d5;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+.timeitem .title_time {
+    position: absolute;
+    top: -34rpx;
+    left: 30rpx;
+}
+.data {
+    padding: 30rpx;
+    width: 300rpx;
+}
+.remark {
+    width: 200rpx;
+    word-break: break-all;
+    color: #666
+}

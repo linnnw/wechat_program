@@ -1,0 +1,50 @@
+.echar {
+    width: 100%;
+}
+
+.mychart-dom-multi-bar {
+    position: absolute;
+    top: 2%;
+    bottom: 52%;
+    left: 0;
+    right: 0;
+}
+
+.mychart-dom-multi-scatter {
+    position: absolute;
+    top: 55%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.mychart-dom-multi-scatter1 {
+    position: absolute;
+    top: 105%;
+    bottom: -50%;
+    left: 0;
+    right: 0;
+}
+
+.mychart-dom-multi-bar1 {
+    position: absolute;
+    top: 155%;
+    bottom: -105%;
+    left: 0;
+    right: 0;
+}
+
+.mychart-dom-multi-bar2 {
+    position: absolute;
+    top: 215%;
+    bottom: -165%;
+    left: 0;
+    right: 0;
+}
+.char_btm {
+    height: 100px;
+    width: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 265%;
+}

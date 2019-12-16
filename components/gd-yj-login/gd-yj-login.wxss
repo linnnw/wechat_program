@@ -1,0 +1,45 @@
+.worklogin {
+    font-size: 28rpx;
+}
+input {
+    display: inline-block;
+    border-bottom: 1px solid #f0f0f0;
+    margin-left: 150rpx;
+}
+.login text {
+    display: inline-block;
+    width: 20%;
+    position: absolute;
+    top: 5rpx;
+    left: 0;
+}
+.iconfon1 {
+    top: 70rpx!important;
+}
+.loginform {
+    width: 500rpx;
+    margin: 0 auto;
+    position: relative;
+}
+.img {
+    height: 250rpx;
+    width: 250rpx;
+    margin: 180rpx auto 80rpx;
+}
+.img image {
+    height: 250rpx;
+    width: 250rpx;
+}
+
+.band {
+    background-color: #85CE61;
+    color: #fff;
+    margin: 0 20rpx;
+}
+.return {
+    background-color: #f0f0f0;
+}
+.option {
+    margin: 50rpx auto;
+    width: 345rpx;
+}

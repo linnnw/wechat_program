@@ -1,0 +1,56 @@
+<!--miniprogram/custom-tab-bar/index.wxml-->
+<cover-view class="tab-bar">
+  <cover-view class="tab-bar-border"></cover-view>
+  <cover-view  class="tab-bar-item" data-path="/pages/statement/statement" data-index="0" bindtap="switchTab">
+    <cover-image src="{{selected == 0?'/assets/icons/tongji1.png':'/assets/icons/tongji.png'}}"></cover-image>
+    <cover-view >报表统计</cover-view>
+  </cover-view>
+  <cover-view class="tab-bar-item" wx:if="{{show}}" data-path="/pages/order/order" data-index="1" bindtap="switchTab">
+    <cover-image src="{{selected == 1?'/assets/icons/more1.png':'/assets/icons/more.png'}}"></cover-image>
+    <cover-view >工单</cover-view>
+    <cover-view class="dot" hidden="{{!dot}}"></cover-view>
+  </cover-view>
+ 
+  <cover-view class="tab-bar-item" data-path="/pages/info/info" data-index="2" bindtap="switchTab">
+    <cover-image src="{{selected == 2?'/assets/icons/xinxi1.png':'/assets/icons/xinxi.png'}}"></cover-image>
+    <cover-view >实时信息</cover-view>
+  </cover-view>
+
+  <cover-view class="tab-bar-item" wx:if="{{!show}}" data-path="/pages/warn/warn" data-index="3" bindtap="switchTab">
+    <cover-image src="{{selected == 3?'/assets/icons/yujing1.png':'/assets/icons/yujing.png'}}"></cover-image>
+    <cover-view >预警</cover-view>
+  </cover-view>
+
+  <cover-view class="tab-bar-item" data-path="/pages/setup/setup" data-index="4" bindtap="switchTab">
+    <cover-image src="{{selected == 4?'/assets/icons/shezhi1.png':'/assets/icons/shezhi.png'}}"></cover-image>
+    <cover-view >设置</cover-view>
+  </cover-view>
+</cover-view>
+
+<!-- <i-tab-bar current="{{ current }}" bindchange="handleChange" data-index="{{list}}">
+  <i-tab-bar-item key="statement" img="/assets/icons/tongji.png"  current-img="/assets/icons/tongji1.png" title="报表统计"></i-tab-bar-item>
+  <i-tab-bar-item key="order" img="/assets/icons/more.png"  current-img="/assets/icons/more1.png" title="工单"></i-tab-bar-item>
+  <i-tab-bar-item key="info" img="/assets/icons/xinxi.png"  current-img="/assets/icons/xinxi1.png" title="实时信息"></i-tab-bar-item>
+  <i-tab-bar-item key="setup"  icon="homepage" current-icon="homepage_fill" title="设置AA"></i-tab-bar-item>
+</i-tab-bar> -->
+
+<!-- <cover-view class="" scroll-top="0"> -->
+  <!-- <wux-tabbar class="tab-bar" theme="positive" position="bottom" safeArea="true" controlled="true" data-list="{{list}}" current="{{current}}" bind:change="onChange">
+    <wux-tabbar-item key="statement" title="报表统计">
+        <wux-icon wux-class="icon" type="ios-pie" size="24" slot="icon-on" />
+        <wux-icon wux-class="icon" type="ios-pie" size="24" slot="icon-off" />
+    </wux-tabbar-item>
+    <wux-tabbar-item wx:if="{{show}}" key="{{flag? 'order':'orderlogin'}}" title="工单">
+        <wux-icon wux-class="icon" type="ios-list-box" size="24" slot="icon-on" />
+        <wux-icon wux-class="icon" type="ios-list-box" size="24" slot="icon-off" />
+    </wux-tabbar-item>
+    <wux-tabbar-item key="info" title="实时信息">
+        <wux-icon wux-class="icon" type="ios-chatboxes" size="24" slot="icon-on" />
+        <wux-icon wux-class="icon" type="ios-chatboxes" size="24" slot="icon-off" />
+    </wux-tabbar-item>
+    <wux-tabbar-item key="setup" title="设置">
+      <wux-icon wux-class="icon" type="ios-settings" size="24" slot="icon-on" />
+      <wux-icon wux-class="icon" type="ios-settings" size="24" slot="icon-off" />
+  </wux-tabbar-item>
+  </wux-tabbar> -->
+<!-- </cover-view> -->

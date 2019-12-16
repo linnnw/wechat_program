@@ -1,0 +1,32 @@
+<view class="info">
+  <wux-search-bar controlled="true" bindinput="ipnval" class="ipn" maxlength="8" bind:confirm="search" />
+  <view class="search_view"></view>
+
+  <wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+    bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+    <view class="nodata" wx:if="{{show}}">没有数据...</view>
+
+    <info-item real="{{real}}" />
+
+  </wux-refresher>
+</view>
+
+<!--pages/info/info.wxml-->
+<!-- <view class="info">
+    <input placeholder="搜索一下" class="ipn" type="text" bindinput="ipnval" bindconfirm='doSearch' />
+    <view class="viewsearch" bindtap="search">
+      <icon class="iconfont iconsousuo {{ipnval.length > 0? 'activecolor': ''}}"></icon>
+    </view> -->
+<!-- <scroll-view class="scroll" style="height: {{infoheight}}rpx; border: 1px solid #000" scroll-x="false" scroll-y="true"
+      bindscrolltoupper="" bindscrolltolower="load" enable-back-to-top="true">
+      <info-item real="{{real}}" />
+    </scroll-view> -->
+
+<!-- <scroll class="scroll" requesting="{{requesting}}" has-top="{{true}}" bottom-size="140" refresh-size="100"
+      bind:refresh="refresh">
+      <info-item real="{{real}}" />
+    </scroll>
+  
+    
+  </view> -->

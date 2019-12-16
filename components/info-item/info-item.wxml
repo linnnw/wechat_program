@@ -1,0 +1,33 @@
+<view class="info_item {{filter.filterTime(item.time) == '离线'?'lixian':''}}" wx:for='{{real}}' wx:key='{{index}}' >
+    <text class="index">{{index + 1}}</text>
+    <view class="opt">
+        <!-- <text class="opt_text iconfont iconlixian" wx:if="{{filter.filterTime(item.time) == '离线'}}">离线</text> -->
+        <text class="opt_text iconfont iconwarning" wx:if="{{item.status.errs}}">提醒</text>
+        <text class="opt_text iconfont" bind:tap='more' data-item="{{item}}" data-index="{{index}}">更多</text>
+    </view>
+    <image data-index="{{index}}" data-item="{{item}}" bindtap="more" wx:if="{{filter.filterarr(item) == 2}}" class="ditan" src='../../assets/icons/ditan.png' mode="aspectFill" />
+    <image data-index="{{index}}" data-item="{{item}}" bindtap="more" wx:if="{{filter.filterarr(item) == 3}}" class="ditan" src='../../assets/icons/msg2.png' mode="aspectFill" />
+    <view class="body">
+        <text>设备名称</text>
+        <text>{{item.fackname == null? '':item.fackname}}</text>
+        <text></text>
+    </view>
+    <view class="body" wx:for='{{item.basic}}' wx:key='{{index}}' wx:if="{{index < 3 }}">
+        <text>{{item.name}}</text>
+        <text class="text2">{{item.msg}}<text class="ye" wx:if="{{index == 2}}">页</text></text>
+        <text class="text3"></text>
+    </view>
+    <view class="body">
+        <text>设备位置</text>
+        <text>{{item.area}}</text>
+        <text></text>
+    </view>
+    <view class="body">
+        <text>最新记录</text>
+        <text>{{item.time}}</text>
+        <text></text>
+    </view>
+</view>
+<!-- filter.filterTime(item.time) -->
+<!-- 2019-01-01 01:01:01 -->
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

@@ -1,0 +1,67 @@
+.worklist {
+    font-size: 28rpx;
+}
+.listitem {
+    margin: 15rpx;
+    box-shadow: 0px 2px 5px rgba(111, 111, 111, .5);
+    overflow: hidden;
+    padding: 15rpx;
+}
+.h1 {
+    margin: 15rpx;
+    padding: 10rpx 0;
+    border-bottom: 2px solid #f0f0f0;
+}
+.li {
+    margin: 0 15rpx;
+}
+.status {
+    padding: 0 10rpx;
+    border: 1px solid #ffa500;
+    color: #ffa500;
+    font-size: 24rpx;
+    margin-left: 15rpx;
+    border-radius: 15rpx;
+}
+.li_left,
+.li_right {
+    display: inline-block;
+}
+.li_left {
+    width: 15%;
+}
+.li_right {
+    width: 85%;
+}
+.btn {
+
+    height: 26rpx;
+    width: 130rpx;
+    font-size: 24rpx;
+    border: 1px solid #999;
+    padding: 0 10rpx;
+    border-radius: 20rpx;
+    color: #999;
+}
+.btm {
+    margin: 20rpx 15rpx;
+    border-top: 2px solid #f0f0f0;
+    height: 50rpx;
+}
+.btm text {
+    float: right;
+    margin-top: 15rpx;
+    padding: 2rpx 15rpx;
+    background-color: #23a4fa;
+    border-radius: 15rpx;
+    color: #fff;
+}
+
+.demo-container {
+    display: block;
+    height: 100vh;
+    width: 8rem;
+    background-color: #fff;
+}
+
+

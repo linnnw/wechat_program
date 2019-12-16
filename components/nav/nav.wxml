@@ -1,0 +1,9 @@
+<view class="nav">
+    <view class="nav_left">
+        <slot name="left"></slot>
+    </view>
+
+    <view class="nav_right">
+        <slot name="right"></slot>
+    </view>
+</view>

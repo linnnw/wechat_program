@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "morecponentday": "../../components/morecponentday/morecponent",
+        "wux-refresher": "../../dist/refresher/index",
+        "wux-search-bar": "../../dist/search-bar/index"
+    }
+}

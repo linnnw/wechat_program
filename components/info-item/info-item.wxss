@@ -1,0 +1,82 @@
+.info_item {
+    background-color: #fff;
+    padding: 15rpx;
+    position: relative;
+    margin: 15rpx;
+    box-shadow: 1px 2px 5px rgba(110, 110, 110, .5);
+    border-radius: 10rpx;
+    font-size: 28rpx;
+}
+.lixian {
+    color: #aeaeae;
+}
+
+.info_item .body {
+    display: flex;
+}
+
+.ye {
+    margin-left: 0!important;
+}
+
+.info_item .body text:first-child {
+    flex: 4;
+}
+.info_item .body .text2 {
+    flex: 12!important;
+}
+.info_item .body .text3 {
+    flex: 1!important;
+}
+
+.info_item .body text:nth-child(2) {
+    flex: 9;
+}
+.info_item .body text:last-child {
+    flex: 4;
+}
+.index {
+    position: absolute;
+    top: -12rpx;
+    left: -12rpx;
+    background-color: #666;
+    color: #aeaeae;
+    line-height: 24rpx;
+    font-style: italic;
+    font-size: 24rpx;
+    text-align: center;
+    border-radius: 6rpx;
+    padding-right: 4rpx;
+    display: inline-block;
+}
+.opt {
+    display: flex;
+    position: absolute;
+    top: 20rpx;
+    right: 20rpx;
+    /* overflow: hidden; */
+}
+
+.opt_text {
+    margin-left: 16rpx;
+    padding: 0 5rpx;
+}
+
+.iconlixian {
+    background-color: #999;
+    border-radius: 9rpx;
+    color: #fff;
+}
+
+.iconwarning {
+    border: 1px solid #ffae00;
+    color: #ffae00;
+    border-radius: 9rpx;
+}
+.ditan {
+    width: 95rpx;
+    height: 90rpx;
+    position: absolute;
+    top: 130rpx;
+    right: 26rpx;
+}

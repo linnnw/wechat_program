@@ -1,0 +1,9 @@
+/* pages/order/order.wxss */
+.nodata {
+    font-size: 24rpx;
+    position: absolute;
+    top: 130rpx;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    color: #5e5e5e;
+  }

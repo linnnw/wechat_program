@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "wux-refresher": "../../dist/refresher/index",
+    "wux-search-bar": "../../dist/search-bar/index"
+  }
+}

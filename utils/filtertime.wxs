@@ -1,0 +1,119 @@
+var filter = {
+  isnull: function (val) {
+    return (val != undefined && val != null)
+
+  },
+  filterTime: function (val) {
+    // val = val.replace(/-/g, "/");
+    if (val == null || val == '' || val == undefined) {
+      return '无记录'
+    } else {
+      var date = getDate()
+      return date.getTime() - Date.parse(val) > 3600000 ? '离线' : '在线';
+    }
+  },
+  filterTime1: function (val) {
+    // val = val.replace(/-/g, "/");
+      return Date.parse(val);
+  
+  },
+  formatDuring: function (mss) {
+    if (mss != null && mss != '' && mss != undefined) {
+      var days = parseInt(mss / (1000 * 60 * 60 * 24));
+      var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+      // var seconds = parseInt((mss % (1000 * 60)) / 1000);
+      hours = hours < 10 ? ('0' + hours) : hours;
+      minutes = minutes < 10 ? ('0' + minutes) : minutes;
+      // seconds = seconds < 10 && seconds >= 1 ? ('0' + seconds) : seconds;
+      if (days > 0) {
+        return days + '天' + hours + "时" + minutes + "分";
+      } else {
+        return hours + "时" + minutes + "分";
+      }
+    } else {
+      return '无记录'
+    }
+  },
+  filterclass: function (msg) {
+    if (msg == 1) {
+      return ''
+    } else if (msg == 2) {
+      return 'warn'
+    } else if (msg == 3) {
+      return 'err'
+    }
+  },
+  filterstatus: function (status) {
+    switch (status) {
+      case '200':
+        return '正常'
+      case '201':
+        return '打印机异常'
+      case '500':
+        return '联机失败'
+      case '501':
+        return '读取错误'
+      case 'NOIP':
+        return '局域网错误'
+      case '400':
+        return '读取错误'
+      default:
+        return '无记录'
+    }
+  },
+  filterarr: function (arr) {
+    var msg = 1;
+    // console.log(arr.status.errs)
+    if (arr.status != undefined && arr.status != '' && arr.status != null && arr.status.errs != null && arr.status.errs != undefined) {
+      // console.log(arr.status.errs)
+      if (arr.status.errs.search('墨粉低') != -1) msg = 2;
+    }
+
+    var toner = arr.loss;
+    for (var i = 0; i < toner.length; i++) {
+      if (toner[i].ratio != undefined && toner[i].ratio != '' && toner[i].ratio != null) {
+        // console.log(toner[i].ratio)
+        if (toner[i].ratio.length > 0 && toner[i].ratio.search('%') != -1) {
+          var a = parseInt(toner[i].ratio.split('%')[0]);
+          if (!isNaN(a) && a == 0) {
+            msg = 3;
+            break;
+          } else if (!isNaN(a) && a <= 3) {
+            msg = msg == 3 ? 3 : 2;
+            break;
+          }
+        }
+      }
+
+    }
+    return msg;
+  },
+  filterstr: function (str) {
+    return str.indexOf('A3') == -1
+  },
+  filterprinter: function (state) {
+    switch (state) {
+      case '200':
+        return ''
+      case '201':
+        return 'warn'
+      default:
+        return 'err'
+    }
+  },
+  objIsEmpty: function(obj) {
+    return JSON.stringify(obj) != '{}';
+  }
+}
+module.exports = {
+  filterTime: filter.filterTime,
+  filterTime1: filter.filterTime1,
+  mathFloor: filter.formatDuring,
+  filterarr: filter.filterarr,
+  filterclass: filter.filterclass,
+  filterstr: filter.filterstr,
+  filterstatus: filter.filterstatus,
+  filterprinter:filter.filterprinter,
+  objIsEmpty: filter.objIsEmpty
+}

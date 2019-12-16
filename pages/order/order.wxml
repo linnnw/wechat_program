@@ -1,0 +1,23 @@
+<!--pages/order/order.wxml-->
+<view class="login" wx:if="{{!show}}">
+    <login bind:myevent='myevent' />
+</view>
+
+<view class="order" wx:if="{{show}}">
+    <wux-tabs wux-class="bordered" controlled current="{{current}}" bindchange="onTabsChange">
+        <wux-tab key="工单" title="工单"></wux-tab>
+        <wux-tab key="处理中">
+            <wux-badge dot="{{dot}}">处理中</wux-badge>
+        </wux-tab>
+    </wux-tabs>
+
+    <view class="gd" hidden="{{current != '工单'}}">
+        <view class="nodata" wx:if="{{_show}}">没有数据...</view>
+        <work-list listData="{{orderData}}" bind:jiedan="jiedan"></work-list>
+    </view>
+    <view class="cl" hidden="{{current != '处理中'}}">
+        <handle id="handle" wx:if="{{filter.objIsEmpty(handleData)}}" handleData="{{ handleData }}" bind:handleOk="handleOk"></handle>
+    </view>
+</view>
+
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

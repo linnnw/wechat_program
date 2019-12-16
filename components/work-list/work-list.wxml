@@ -1,0 +1,35 @@
+
+<view class="worklist">
+  <view class="listitem" wx:for="{{listData}}" wx:key="{{index}}">
+    <view class="h1">
+      {{item.top_dept_name}}
+    </view>
+    <view class="body">
+      <view class="li">
+        <view class="li_left">单号</view>
+        <view class="li_right">{{item.bill_code}} <text class="status">{{item.status == 10? '待派' : '指派单'}}</text></view>
+      </view>
+      <view class="li">
+        <view class="li_left">时间</view>
+        <view class="li_right">{{item.create_time}} <text>距现在{{filter.mathFloor((time - (filter.filterTime1(item.create_time))))}}</text>  </view>
+      </view>
+      <view class="li">
+        <view class="li_left">地址</view>
+        <view class="li_right">{{item.client_address}}</view>
+      </view>
+      <view class="li">
+        <view class="li_left">返单</view>
+        <view class="li_right">
+          <text size="mini" class="btn" data-item="{{item}}" bind:tap="toggleRight1">返单信息</text>
+        </view>
+      </view>
+      <view class="btm" data-item="{{item}}" bindtap="jiedan">
+        <text>{{item.status == 10? '接' : '处理'}}{{item.type_name}}</text>
+      </view>
+    </view>
+  </view>
+  
+</view>
+
+
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

@@ -1,0 +1,50 @@
+<view class="cponent" wx:for="{{day}}" wx:key="{{index}}">
+        <text class="index">{{index + 1}}</text>
+    <view class="title">
+        No.{{index+1}}({{item.time}})
+    </view>
+    <view class="top">
+        <view class="head">
+            <text class="iconfont iconSettings-Help"> 设备状态</text>
+            <text class="top_date iconfont">{{item.time}}</text>
+        </view>
+        <view class="top_body">
+            <view class="t_body_key">
+                <view class="li">当前状态:</view>
+                <view class="li">异常信息:</view>
+                <view class="li">设备位置:</view>
+            </view>
+            <view class="t_body_val">
+                <view class="li">{{item.status.msg}}</view>
+                <view class="li">{{item.status.errs}}</view>
+                <view class="li">{{item.area}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="center">
+        <view class="head">
+            <text class="iconfont iconicon-test"> 基本信息</text>
+        </view>
+        <view class="center_body">
+            <view wx:for="{{item.basic}}" wx:key="{{index}}" wx:if="{{item.msg !== '不支持' && filter.filterstr(item.name) }}" class="c_bottom_l_key {{index>1?'in_block': ''}}">
+                <text class="{{index>1?'msg': 'msg1'}}" >{{item.name}}:　</text>
+                <text class="{{index>1?'fontred': ''}}" >{{item.msg}} <text class="ye" wx:if="{{index>1 && item.msg !== '不支持'}}">页</text> </text>
+            </view>
+        </view>
+    </view>
+    <view class="center">
+        <view class="head">
+            <text class="iconfont icondayinji"> 耗材信息</text>
+        </view>
+        <view class="bottom_body">
+            <view wx:for="{{item.loss}}" wx:key="{{index}}" class="in_block {{filter.filterclass(item.warn)}}">
+                <text style="display: inline-block; width: 60%;">{{item.name}}:</text>
+                <text>{{item.ratio}}</text>
+            </view>
+
+        </view>
+    </view>
+
+</view>
+
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

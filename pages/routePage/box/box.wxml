@@ -1,0 +1,34 @@
+<view class="print_box">
+    <nav>
+        <view slot="right">
+    
+            <view class="h70" bind:tap='erweima'><text class="iconfont iconerweima"></text></view>
+    
+        </view>
+    </nav>
+    <view class="title_h1">
+        {{boxappid}}-盒子
+    </view>
+    <view class="box">
+    
+        <radio-group class='radio-group' bindchange="radioChange">
+            <radio class='radio' wx:for="{{item}}" wx:key="{{index}}" value="{{item.name}}" checked="{{item.checked}}">
+                <text class="loginLab"> {{item.name}}</text>
+            </radio>
+        </radio-group>
+    
+        <form bindsubmit="formSubmit">
+            <view class="title">盒子IP</view>
+            <input type="text" name='getip' value="{{getip}}" bindinput='getip' disabled="{{flag}}" />
+    
+            <view class="title">掩码</view>
+            <input type="text" name='getmask' value="{{getmask}}" bindinput='getmask' disabled="{{flag}}" />
+    
+            <view class="title">网关</view>
+            <input type="text" name='getgate' value="{{getgate}}" bindinput='getgate' disabled="{{flag}}" />
+    
+            <button class="save" size='mini' formType="submit">保存</button>
+            <button size='mini' bind:tap='back'>关闭</button>
+        </form>
+    </view>
+</view>

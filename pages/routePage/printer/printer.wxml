@@ -1,0 +1,27 @@
+<view class="printer">
+    <nav>
+        <view slot="right">
+            <view class="h70" bind:tap='jumpBox'><text class="iconfont iconSettings-Help"></text></view>
+            <view class="h70" bind:tap='erweima'><text class="iconfont iconerweima"></text></view>
+    
+        </view>
+    </nav>
+    <view class="title_h1">
+        {{printappid}}-打印机
+    </view>
+    <view class="box">
+    
+    
+        <form bindsubmit="formSubmit" class="">
+    
+            <view class="title">打印机ip</view>
+            <input type="text" name='ip' value="{{ip}}" bindinput="ip" />
+    
+            <view class="title">设备名称</view>
+            <input type="text" name='name' value="{{name}}" bindinput="name" />
+    
+            <button class="save" size='mini' bind:tap="save" formType="submit">保存</button>
+            <button size='mini' bind:tap='back'>关闭</button>
+        </form>
+    </view>
+</view>

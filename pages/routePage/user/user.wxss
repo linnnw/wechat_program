@@ -1,0 +1,69 @@
+.user {
+    font-size: 28rpx;
+}
+.userItem {
+    margin: 20rpx;
+    position: relative;
+}
+.li:last-child {
+    top: 5rpx;
+}
+.userItem_info {
+    width: 410rpx;
+    height: 80rpx;
+    background-color: #E4531F;
+    border-radius: 30rpx;
+    display: inline-block;
+    margin: 15rpx;
+    line-height: 100rpx;
+    position: relative;
+}
+
+.userItem_info text {
+    color: #fff;
+    position: absolute;
+    top: -25rpx;
+    left: 100rpx;
+}
+
+.sizeModal-img {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    top: -10rpx;
+    left: -10rpx;
+}
+
+.operation {
+    position: absolute;
+    right: 10rpx;
+    top: 16rpx;
+}
+
+.user .iconfont {
+    color: #000;
+    font-size: 75rpx;
+    margin-left: 20rpx;
+}
+
+.colorstyle {
+    color: #1EAAE8!important;
+}
+
+.ipn {
+    height: 50rpx;
+    width: 200rpx;
+    border-bottom: 1px solid #999;
+    float: right;
+    margin-right: 200rpx;
+    margin-top: 10rpx;
+}
+
+.admin {
+    position: absolute;
+    top: 16rpx;
+    right: 0;
+    font-weight: 700;
+}

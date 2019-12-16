@@ -1,0 +1,72 @@
+<view class="setting">
+
+    <nav class="nav">
+        <view slot="left" class="userItem_info" bind:tap="logout">
+            <image class='sizeModal-img' mode='aspectFill' src='{{user.avatar}}'></image>
+            <text>{{user.companyname}}-{{user.name}}</text>
+        </view>
+        <view slot="right" class="nav_right">
+            <view class="h70" wx:if="{{user.isadmin == 2}}" bind:tap='jumpUser'><text
+                    class="iconfont icontongxunlu"></text></view>
+            <view class="h70" bind:tap='erweima'><text class="iconfont iconerweima"></text></view>
+
+        </view>
+    </nav>
+    <view class="head"></view>
+
+
+    <input class="search" placeholder="网关名称/设备名称/打印机IP" type="text" bindinput="ipnval" bindconfirm='doSearch' />
+    <view class="viewsearch" bindtap="search">
+        <icon class="iconfont iconsousuo {{ipnval.length > 0? 'activecolor': ''}}"></icon>
+    </view>
+
+    <wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+        bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+        <view class="nodata" wx:if="{{show}}">没有数据...</view>
+
+        <view wx:for="{{setup}}" wx:key="{{index}}"
+            class="equipment {{filter.filterTime(item.time) == '在线' ? '': 'lixian'}}">
+            <view class="li">
+                <text class="index">{{index + 1}}</text>
+                <view class="key">网关名称</view>
+                <view class="val">{{item.fackname}}</view>
+            </view>
+            <view class="li">
+                <view class="key">设备名称</view>
+                <view class="val">{{item.devicefackname == null? '':item.devicefackname}}</view>
+            </view>
+
+            <view class="li">
+                <view class="key">打印机IP</view>
+                <view class="val">{{item.devip == null? '':item.devip}}</view>
+            </view>
+            <view class="li">
+                <view class="key">盒子IP　</view>
+                <view class="val">{{item.curip == null? '':item.curip}}</view>
+            </view>
+            <view class="li">
+                <view class="key">运行状态</view>
+                <view class="val {{filter.filterTime(item.time) == '在线' ? 'bgc_lv': ''}}">
+                    {{ filter.filterTime(item.time)}}</view>
+            </view>
+            <view class="li">
+                <view class="key">设备状态</view>
+                <view class="val {{filter.filterprinter(item.printer_state)}}">
+                    {{filter.filterstatus(item.printer_state)}}</view>
+            </view>
+            <view class="li">
+                <view class="key">活跃时间</view>
+                <view class="val">{{item.time == null?'':item.time}}</view>
+            </view>
+            <view class="li">
+                <view class="key">最后位置</view>
+                <view class="val">{{item.lastarea == null? '':item.lastarea}}</view>
+            </view>
+            <view hidden="true" class="more" data-itemdata="{{item}}" bind:tap='more'></view>
+        </view>
+    </wux-refresher>
+
+</view>
+
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

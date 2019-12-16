@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="usermotto">
+    <image bindtap="bindViewTap" class="userinfo-avatar"
+      src="https://gdpic-1256197083.cos.ap-chengdu.myqcloud.com/yichao.png" mode="cover"></image>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{moto}}</text>
+
+  </view>
+  <view class="bindview">
+    <input placeholder="输入绑定码" bindinput="getbindcode" />
+
+    <button class="button-login" wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 绑定 </button>
+    <view wx:else>请升级微信版本</view>
+
+  </view>
+
+</view>

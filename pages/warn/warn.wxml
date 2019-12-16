@@ -1,0 +1,93 @@
+<view class="login" wx:if="{{!show}}">
+    <login bind:myevent='myevent' />
+</view>
+
+
+<view class="_warn" wx:if="{{show}}">
+    <input class="search" placeholder="客户名称" type="text" bindinput="ipnval" bindconfirm='doSearch' />
+    <view class="viewsearch" bindtap="search">
+        <icon class="iconfont iconsousuo {{ipnval.length > 0? 'activecolor': ''}}"></icon>
+    </view>
+    <view class="top_fixed"></view>
+    <view class="top_block"></view>
+
+    <wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+    bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+    <view class="nodata" wx:if="{{_show}}">没有数据...</view>
+
+    <view class="body">
+            <view class="block" wx:for="{{warndata}}" wx:key="{{index}}">
+                <view class="li">
+                    <view class="_l">机器码</view>
+                    <view class="_r">{{item.devid}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li">
+                    <view class="_l">客户</view>
+                    <view class="_r">{{item.client_name == null? '':item.client_name}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li">
+                    <view class="_l">客户联系</view>
+                    <view class="_r">{{item.client_phone == null? '':item.client_phone}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li">
+                    <view class="_l">客户地址</view>
+                    <view class="_r">{{item.client_addr == null? '':item.client_addr}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li">
+                    <view class="_l">合同号</view>
+                    <view class="_r">{{item.bill_code == null? '':item.bill_code}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li">
+                    <view class="_l">是否处理</view>
+                    <view class="_r">{{item.deal? '已处理': '否'}}</view>
+                    <view class="option"></view>
+                </view>
+                <view class="li" hidden="{{!item.deal}}">
+                    <view class="_l">处理时间</view>
+                    <view class="_r">{{item.dealTime}}</view>
+                    <view class="option"></view>
+                </view>
+                <text class="handle iconfont iconbanshou" data-devid="{{item.devid}}" hidden="{{item.deal}}" bindtap="handlewarn">处理</text>
+                <view class="title">
+                    <text class="iconfont icondayinji"> 碳 粉</text>
+                </view>
+                <view class="loss">
+                    <view wx:for="{{item.loss}}" wx:key="{{index}}" class="loss_l {{filter.filterclass(item.warn)}}">
+                        <text>{{item.name}}:</text>
+                        <text>　{{item.ratio}}</text>
+                    </view>
+                </view>
+    
+                <view class="title">
+                    <text class="iconfont icondayinji"> 鼓 单 元</text>
+                </view>
+                <view class="loss">
+                    <view wx:for="{{item.drum}}" wx:key="{{index}}"  class="loss_l {{filter.filterclass(item.warn)}}">
+                        <text>{{item.name}}:</text>
+                        <text>　{{item.ratio}}</text>
+                    </view>
+                </view>
+    
+                <view class="title">
+                    <text class="iconfont icondayinji"> 显 影</text>
+                </view>
+                <view class="loss">
+                    <view wx:for="{{item.developer}}" wx:key="{{index}}" class="loss_l {{filter.filterclass(item.warn)}}">
+                        <text>{{item.name}}:</text>
+                        <text>　{{item.ratio}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+  </wux-refresher>
+    
+</view>
+
+<wxs module="filter" src="../../utils/filtertime.wxs"></wxs>

@@ -1,0 +1,15 @@
+<view class="fandantime">
+    <view class="fandantitle">
+        <text class="iconfont iconxinxi1-copy"> 返单信息</text>
+    </view>
+    <view class="fandandata">
+        <view class="timeitem" wx:for="{{fandanData}}" wx:key="{{index}}">
+            <view class="data">
+                <view class="title_time">{{item.time}}</view>
+                <text class="remark">{{item.remark}}</text>
+            </view>
+            <view class="dot"></view>
+        </view>
+    </view>
+
+</view>

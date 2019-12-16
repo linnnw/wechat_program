@@ -1,0 +1,22 @@
+.info {
+    padding-bottom: 150rpx;
+    /* border-bottom: 1px solid #000; */
+}
+.ipn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+}
+.search_view {
+    height: 90rpx;
+}
+.nodata {
+    font-size: 24rpx;
+    position: absolute;
+    top: 10rpx;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    color: #5e5e5e;
+}

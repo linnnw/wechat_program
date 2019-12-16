@@ -1,0 +1,30 @@
+<!--pages/statement/statement.wxml-->
+<!--index.wxml-->
+<!-- <scroll-view class="srcoll" scroll-y="true">
+ 
+      
+  </view>
+</scroll-view> -->
+<view class="echar">
+    <ec-canvas wx:if="{{flag}}" class="mychart-dom-multi-bar" canvas-id="mychart-multi-bar" ec="{{ ecBar }}"></ec-canvas>
+    <ec-canvas wx:if="{{flag}}" class="mychart-dom-multi-scatter" canvas-id="mychart-multi-scatter1" ec="{{ ecScatter }}"></ec-canvas>
+    <ec-canvas wx:if="{{flag}}" class="mychart-dom-multi-scatter1" canvas-id="mychart-multi-scatter" ec="{{ ecScatter1 }}"></ec-canvas>
+    <ec-canvas wx:if="{{flag}}" class="mychart-dom-multi-bar1" canvas-id="mychart-multi-bar1" ec="{{ ecBar1 }}"></ec-canvas>
+    <ec-canvas wx:if="{{flag}}" class="mychart-dom-multi-bar2" canvas-id="mychart-multi-bar2" ec="{{ ecBar2 }}"></ec-canvas>
+</view>
+<view class="char_btm"></view>
+
+<!-- <view class="statement">
+    <wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+    bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+  <view class="" hover-class="none" hover-stop-propagation="false">
+        <ec-canvas class="mychart-dom-multi-bar" canvas-id="mychart-multi-bar" ec="{{ ecBar }}"></ec-canvas>
+      <ec-canvas class="mychart-dom-multi-scatter" canvas-id="mychart-multi-scatter1" ec="{{ ecScatter }}"></ec-canvas>
+      <ec-canvas class="mychart-dom-multi-scatter1" canvas-id="mychart-multi-scatter" ec="{{ ecScatter1 }}"></ec-canvas>
+      <ec-canvas class="mychart-dom-multi-bar1" canvas-id="mychart-multi-bar1" ec="{{ ecBar1 }}"></ec-canvas>
+      <ec-canvas class="mychart-dom-multi-bar2" canvas-id="mychart-multi-bar2" ec="{{ ecBar2 }}"></ec-canvas>
+  </view>
+
+  </wux-refresher> -->
+<!-- </view> -->

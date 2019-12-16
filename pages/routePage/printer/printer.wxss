@@ -1,0 +1,55 @@
+.printer {
+    font-size: 30rpx;
+}
+.box {
+    padding: 15rpx;
+}
+
+input {
+    border-bottom: 1px solid #666;
+    margin-right: 15rpx;
+    margin-bottom: 50rpx;
+}
+
+.title {
+    margin-top: 40rpx;
+}
+
+.save {
+    background-color: green;
+    margin-left: 50%;
+    margin-right: 10rpx;
+    color: #fff;
+}
+
+button {
+    transform: translateX(-102%);
+    box-shadow: 0 1px 3px rgba(111, 111, 111, .5);
+}
+
+.h70 {
+    display: inline-block;
+    height: 70rpx;
+    width: 70rpx;
+    border-radius: 50%;
+    background-color: #1EAAE8;
+    font-size: 70rpx;
+    margin-left: 20rpx;
+    position: relative;
+}
+
+.h70 text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+.title_h1 {
+    height: 100rpx;
+    background-color: #f9f9f9;
+    text-align: center;
+    line-height: 100rpx;
+    font-size: 40rpx;
+}

@@ -1,0 +1,16 @@
+.nav {
+    height: 90rpx;
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+.nav_left,
+.nav_right {
+    position: absolute;
+    top: 50%;
+    margin-top: -35rpx;
+}
+
+.nav_right {
+    right: 50rpx;
+}
