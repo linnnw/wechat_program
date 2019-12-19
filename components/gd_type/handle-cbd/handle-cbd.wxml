@@ -1,0 +1,233 @@
+<i-modal title="返单信息" visible="{{ visiblefd }}" bind:ok="handleOk" bind:cancel="handleClose">
+  <textarea class="" hidden="{{!visiblefd}}" value="{{remark}}" placeholder="请输入返单信息..." maxlength="350"
+    bindinput="val">
+  </textarea>
+</i-modal>
+
+<view class="handle">
+  <view class="body">
+    <view class="basic">
+      <view class="title">
+        基本信息
+        <view class="title_bl"></view>
+      </view>
+      <view class="li">
+        <view class="_l">单号</view>
+        <view class="_r">{{form.bill_code}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">类型</view>
+        <view class="_r">{{form.type_name}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">工单时间</view>
+        <view class="_r">{{form.create_time}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">客户</view>
+        <view class="_r">{{form.client_name}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">联系人</view>
+        <view class="_r">{{form.relate_name}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">电话</view>
+        <view class="_r">{{form.relate_phone}}</view>
+      </view>
+      <view class="li">
+        <view class="_l">地址</view>
+        <view class="_r">{{form.client_address}}</view>
+      </view>
+
+      <view class="li">
+        <view class="f_l">返单历史</view>
+        <view class="f_r">
+          <scroll-view class="scroll" scroll-x="false" scroll-y="true">
+            <view wx:for="{{fandanData}}" wx:key="{{index}}">
+              <view>{{item.time}}</view>
+              <text style="color: #666;">{{item.remark}}</text>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+
+    </view>
+
+    <wux-date-picker visible="{{ visible }}" controlled mode="datetime" value="{{ value1 }}" lang="{{ lang }}"
+      data-index="1" data-mode="datetime" bind:confirm="onConfirm" bind:visibleChange="onVisibleChange" />
+    <view class="basic">
+      <view class="title">
+        抄表信息
+        <view class="title_bl"></view>
+      </view>
+      <view class="li">
+        <!-- <view class="_l">到达时间</view> -->
+        <view class="_r">
+          <wux-date-picker minDate="2019-11-01 00:00:00" class="btn" mode="datetime" value="{{ form.arrive_time }}"
+            lang="{{ lang }}" data-index="arrive" data-mode="datetime" bind:confirm="onConfirm">
+            <wux-cell class="btn" title="到达时间" is-link extra="{{form.arrive_time == '' ? val1 : form.arrive_time }}">
+            </wux-cell>
+          </wux-date-picker>
+        </view>
+      </view>
+      <view class="li">
+        <!-- <view class="_l">离开时间</view> -->
+        <view class="_r">
+          <view class="_r">
+            <wux-date-picker minDate="2019-11-01 00:00:00" class="btn" mode="datetime" value="{{ form.leave_time }}"
+              lang="{{ lang }}" data-index="leave" data-mode="datetime" bind:confirm="onConfirm">
+              <wux-cell class="btn" title="离开时间" is-link extra="{{form.leave_time == '' ? val2 : form.leave_time}}">
+              </wux-cell>
+            </wux-date-picker>
+          </view>
+        </view>
+      </view>
+
+      <view class="li">
+        <view class="_l">处理备注</view>
+        <view class="_r">
+          <textarea hidden="{{visiblefd}}" style="text-align: right;" value="{{form.remark}}" bindinput="beizu_remark"
+            placeholder="请输入备注" name="" id="" cols="10" rows="10"></textarea>
+        </view>
+      </view>
+
+    </view>
+    <block wx:for="{{form.data}}" wx:key="{{index}}">
+
+
+      <view class="basic">
+        <view class="title">
+          第{{index+1}}台设备
+          <view class="title_bl"></view>
+        </view>
+        <view class="li">
+          <view class="_l">设备名称</view>
+          <view class="_r">{{ item.product_name}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">机器码</view>
+          <view class="_r">{{item.devid}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">服务码</view>
+          <view class="_r">{{item.server_code}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">套餐</view>
+          <view class="_r">{{item.last_hb_reading==null?'':item.last_hb_reading}}</view>
+        </view>
+
+      </view>
+
+      <view class="basic" wx:if="item.hasdevid===1&&item.counter>=1">
+        <view class="title">
+          黑白计数器
+          <view class="title_bl"></view>
+        </view>
+        <view class="li">
+          <view class="_l">上次抄表时间</view>
+          <view class="_r">{{item.last_time==null?'':item.last_time}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">上次读数</view>
+          <view class="_r">{{item.last_hb_reading==null?'':item.last_hb_reading}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">上次使用</view>
+          <view class="_r">{{item.last_hb_use==null?'':item.last_hb_use}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">本次读数</view>
+          <view class="_r">{{item.this_hb_reading}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">无效张数</view>
+          <view class="_r">{{item.hb_invalid_num}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">本次使用</view>
+          <view class="_r">{{item.this_hb_use}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">此项费用</view>
+          <view class="_r">{{item.hb_cost}}</view>
+        </view>
+      </view>
+
+
+      <view class="basic" wx:if="item.hasdevid===1&&item.counter>=2">
+        <view class="title">
+          彩色计数器
+          <view class="title_bl"></view>
+        </view>
+        <view class="li">
+          <view class="_l">上次抄表时间</view>
+          <view class="_r">{{item.last_time==null?'':item.last_time}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">上次读数</view>
+          <view class="_r">{{item.last_cl_reading==null?'':item.last_cl_reading}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">上次使用</view>
+          <view class="_r">{{item.last_cl_use==null?'':item.last_cl_use}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">本次读数</view>
+          <view class="_r">{{item.this_cl_reading}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">无效张数</view>
+          <view class="_r">{{item.cl_invalid_num}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">本次使用</view>
+          <view class="_r">{{item.this_cl_use}}</view>
+        </view>
+        <view class="li">
+          <view class="_l">此项费用</view>
+          <view class="_r">{{item.cl_cost}}</view>
+        </view>
+      </view>
+
+    </block>
+    <view class="basic">
+      <view class="title">
+        总计费用
+        <view class="title_bl"></view>
+      </view>
+      <view class="li">
+        <view class="_l">总计费用</view>
+        <view class="_r">{{item.final_price}}</view>
+      </view>
+
+    </view>
+
+
+    <!-- 签名 -->
+    <view class="qm">
+      <image class="autograph" src="{{form.sign}}" bind:tap="qianming" lazy-load="false" binderror="" bindload="">
+
+      </image>
+      <view class="qmtitle">
+        客户签名
+      </view>
+    </view>
+
+    <view class="photo">
+      <text class="iconfont iconpaizhao" bindtap="photo"></text>
+      <view class="photoimage" wx:for="{{imagesrc}}" wx:key="{{index}}">
+        <image class="imgclass" src="{{item.path}}" mode="aspectFill"></image>
+        <text class="closeimage iconfont iconguanbi" data-index="{{index}}" bindtap="close"></text>
+      </view>
+    </view>
+
+
+  </view>
+  <view class="options">
+    <button class="option" size="mini" bind:tap="save">保存</button>
+    <button class="option" size="mini" bind:tap="handlefd">返单</button>
+    <button class="option" size="mini" bind:tap="commit">提交</button>
+  </view>
+</view>

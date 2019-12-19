@@ -28,7 +28,7 @@ Page({
       })
       return;
     }
-    console.log(11)
+    // console.log(11) 
     var that = this;
     if (e.detail.errMsg.indexOf('fail') < 0) {
 
@@ -89,6 +89,7 @@ Page({
                       request._post(`/login?unionid=${unionid}`, {}, res => {
                         console.log(res)
                         if (res.data.status == 200) {
+                          wx.setStorageSync('firstlogin', true);
                           wx.setStorageSync('user', res.data.user);
                           if (res.header['Set-Cookie'] != undefined) {
                             wx.setStorageSync('cookie', res.header['Set-Cookie']);

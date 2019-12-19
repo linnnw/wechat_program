@@ -63,6 +63,18 @@ Component({
       } else {
         request._post('/workOrder/api/handle', { "id": item.id, "type": item.type, "status": item.status }, res => {
           console.log(res)
+          if (res.data.status == 200) {
+            this.triggerEvent('jiedan')
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: res.data.msg,
+              showCancel: false,
+              success(res) {
+                console.log('用户点击确定')
+              }
+            })
+          }
         })
       }
 

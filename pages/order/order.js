@@ -1,5 +1,5 @@
 import request from '../../utils/request.js'
-import { $stopWuxRefresher, $stopWuxLoader,$wuxDialog } from '../../dist/index'
+import { $stopWuxRefresher, $stopWuxLoader, $wuxDialog } from '../../dist/index'
 // pages/order/order.js
 Page({
 
@@ -8,6 +8,7 @@ Page({
    */
   data: {
     orderData: [],
+    shebeiData: [],
     handleData: {},
     page: 1,
     dot: false,
@@ -49,17 +50,25 @@ Page({
       } else {
         getApp().globalData.dot = true
         this.getdot();
+        request._post('/workOrder/api/getDetailById', { "id": res.data.row.id, "type": res.data.row.type }, res => {
+          console.log(res.data.list)
+          if(res.data.status == 200){
+            this.setData({
+              shebeiData: res.data.list
+            })
+            // console.log(this.data.shebeiData)
+          }
+        })
         request._post('/workOrder/api/getById', { "id": res.data.row.id, "type": res.data.row.type }, res => {
           console.log(res)
           if (res.data.status == 200) {
             this.setData({
               handleData: res.data.row
             })
+            // console.log(this.data.handleData)
           }
         })
-        request._post('/workOrder/api/getDetailById', { "id": res.data.row.id, "type": res.data.row.type }, res => {
-          console.log(res)
-        })
+        
       }
     })
   },
@@ -76,6 +85,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // const ctx = wx.createCanvasContext('autograph')
+
+    // ctx.drawImage('http://tmp/wx99fca1b9d8455954.o6zAJs3CgHDkuEMBX__ocDTT2qIg.sfjQ5511ZKjD872c7669c2904e0600cfc9d170c930d9.png', 0, 0, 150, 100)
+    // ctx.draw()
     this.setData({
       show: getApp().globalData.login_show,
       dot: getApp().globalData.dot
@@ -89,11 +102,13 @@ Page({
       this.setData({
         show: getApp().globalData.login_show
       })
+      
       // 获取工单数据
       this.getwork();
 
       //获取处理中数据
       this.gethandle();
+
     }
   },
   myevent() {
@@ -107,10 +122,18 @@ Page({
     this.setData({
       current: '处理中'
     })
-    
+
     this.gethandle();
     this.getwork();
 
+  },
+  // 提交工单
+  commit() {
+    this.setData({
+      current: '工单'
+    })
+    this.gethandle();
+    this.getwork();
   },
   handleOk() {
     this.setData({

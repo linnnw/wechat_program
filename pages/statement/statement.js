@@ -159,7 +159,44 @@ Page({
    */
   onLoad: function (options) {
     this.getEchartsData();
-    
+
+    // 第一次登录在图标判断 第二次就不需要
+    if (wx.getStorageSync('firstlogin')) {
+      console.log('firstlogin')
+      if (wx.getStorageSync('user').dbTemplate == 'ymp_yichaoyun') {
+        this.getTabBar().setData({
+          show: true
+        })
+        let user = wx.getStorageSync('user');
+        if (user.status == 1) {
+          getApp().globalData.login_show = true
+          request._post('/workOrder/api/getHandling', {}, res => {
+            console.log(res)
+            if (JSON.stringify(res.data.row) == '{}' || res.data.row == undefined) {
+              getApp().globalData.dot = false
+            } else {
+              getApp().globalData.dot = true
+            }
+          })
+        } else {
+          getApp().globalData.login_show = false
+        }
+      } else {
+        // console.log(11)
+        this.getTabBar().setData({
+          show: false
+        })
+        let user = wx.getStorageSync('user');
+        if (user.status == 1) {
+          getApp().globalData.login_show = true
+        } else {
+          getApp().globalData.login_show = false
+        }
+
+      }
+      wx.setStorageSync('firstlogin', false);
+    }
+
   },
 
   /**

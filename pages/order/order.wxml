@@ -4,6 +4,7 @@
 </view>
 
 <view class="order" wx:if="{{show}}">
+
     <wux-tabs wux-class="bordered" controlled current="{{current}}" bindchange="onTabsChange">
         <wux-tab key="工单" title="工单"></wux-tab>
         <wux-tab key="处理中">
@@ -16,7 +17,8 @@
         <work-list listData="{{orderData}}" bind:jiedan="jiedan"></work-list>
     </view>
     <view class="cl" hidden="{{current != '处理中'}}">
-        <handle id="handle" wx:if="{{filter.objIsEmpty(handleData)}}" handleData="{{ handleData }}" bind:handleOk="handleOk"></handle>
+        <handle id="handle" wx:if="{{ filter.objIsEmpty(handleData) && handleData.type == 'qtd'}}" handleData="{{ handleData }}" bind:commit="commit" bind:handleOk="handleOk"></handle>
+        <handle-cbd id="handle" wx:if="{{ filter.objIsEmpty(handleData) && handleData.type == 'cbd'}}" shebeiData="{{ shebeiData }}" handleData="{{ handleData }}" bind:commit="commit" bind:handleOk="handleOk"></handle-cbd>
     </view>
 </view>
 

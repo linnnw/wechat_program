@@ -7,6 +7,7 @@
       "wux-tab": "../../dist/tab/index",
       "wux-badge": "../../dist/badge/index",
       "work-list": "/components/work-list/work-list",
-      "handle": "/components/handle/handle"
+      "handle": "/components/gd_type/handle-qtd/handle",
+      "handle-cbd": "/components/gd_type/handle-cbd/handle-cbd"
   }
 }

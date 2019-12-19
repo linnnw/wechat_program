@@ -43,6 +43,7 @@ Component({
     attached: function () {
       // console.log(11)
       // 在组件实例进入页面节点树时执行
+
       if (wx.getStorageSync('user').dbTemplate == 'ymp_yichaoyun') {
         this.setData({
           show: true
@@ -74,6 +75,7 @@ Component({
         }
 
       }
+
       this.setData({
         dot: getApp().globalData.dot
       })
@@ -94,7 +96,7 @@ Component({
     switchTab(e) {
       console.log(e)
       let url = e.currentTarget.dataset.path;
-      wx.switchTab({url})
+      wx.switchTab({ url })
 
       // console.log(e)
     }

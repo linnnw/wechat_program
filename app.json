@@ -6,6 +6,7 @@
     "pages/info/info",
     "pages/warn/warn",
     "pages/setup/setup",
+    "pages/routePage/signature/signature",
     "pages/routePage/info-more/info-more",
     "pages/routePage/info-more-day/info-more-day",
     "pages/routePage/user/user",
