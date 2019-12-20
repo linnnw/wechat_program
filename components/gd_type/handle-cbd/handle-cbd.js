@@ -10,6 +10,7 @@ Component({
     val1: '请选择到达时间',
     val2: '请选择离开时间',
     lang: 'zh_CN',
+    price_arr: [], //总金额计算
     form: {
       ...getApp().globalData.commonField(),
       type: 'cbd',
@@ -19,9 +20,9 @@ Component({
       service_method: null,
       client_email: null,
       client_phone: null,
-      cost_sum: 0,
-      data: []
+      cost_sum: 0
     },
+
     imagesrc: [],
     paths: []  // 记录图片本地路径
   },
@@ -37,7 +38,6 @@ Component({
   },
   pageLifetimes: {
     show: function () {
-
       this.setData({
         ['form.sign']: getApp().globalData._base64
       })
@@ -59,27 +59,9 @@ Component({
   },
   lifetimes: {
     attached: function () {
-      console.log(this.properties.handleData)
-      console.log(this.properties.shebeiData)
       let data = this.properties.handleData
       let shebei = this.properties.shebeiData
-      console.log('shebei',shebei)
-      // 设备信息
-      // for (let i of shebei) {
-      //   if (i.counter <= 0) {
-      //     i.total_cost = i.base_price;
-      //     continue;
-      //   }
-      //   let costMap = this.calculate(i, shebei);
-      //   i.total_cost = costMap.total;
-      //   i.hb_cost = costMap.hb;
-      //   i.cl_cost = costMap.cl;
-      // }
-      // this.data.form.data = shebei;
-      this.setData({
-        ['form.data']: shebei
-      })
-      console.log(this.data.form.data)
+
       // 基础信息
       Object.keys(data).forEach(key => {
         if (key in this.data.form && !['imageList'].includes(key)) {
@@ -102,6 +84,20 @@ Component({
           })
         }
       })
+      // 获取设备 计算工单费用
+      this.setData({
+        ['form.data']: shebei
+      })
+      for (let i = 0; i < this.data.form.data.length; i++) {
+        this.setData({
+          ['form.data[' + i + '].hb_cost']: 0,
+          ['form.data[' + i + '].cl_cost']: 0,
+        })
+        this.is_code(i, 'hb');
+        this.is_code(i, 'cl');
+      }
+
+
       if (this.data.form.sign != '' && this.data.form.sign != null && this.data.form.sign != undefined) {
         getApp().globalData._base64 = this.data.form.sign
       }
@@ -130,6 +126,7 @@ Component({
           show: false
         })
       }
+
     },
     detached: function () {
       // 在组件实例被从页面节点树移除时执行
@@ -290,6 +287,15 @@ Component({
       this.saveORcommit('/commit')
     },
     saveORcommit(cs_path) {
+
+      if (this.data.form.data.length <= 0) {
+        wx.showModal({
+          title: '提示',
+          content: '没有抄表设备',
+          showCancel: false
+        })
+        return
+      }
       if (this.data.form.arrive_time == '') {
         wx.showModal({
           title: '提示',
@@ -297,38 +303,19 @@ Component({
           showCancel: false
         })
         return
-      } else if (this.data.form.leave_time == '') {
+      }
+      if (this.data.form.leave_time == '') {
         wx.showModal({
           title: '提示',
           content: '请选择离开时间',
           showCancel: false
         })
         return
-      } else if (this.timeformat(this.data.form.arrive_time) > this.timeformat(this.data.form.leave_time)) {
+      }
+      if (this.timeformat(this.data.form.arrive_time) > this.timeformat(this.data.form.leave_time)) {
         wx.showModal({
           title: '提示',
           content: '离开时间不能早于到达时间',
-          showCancel: false
-        })
-        return
-      } else if (this.data.form.handle_result == "" || (this.data.form.handle_result.length > 0 && this.data.form.handle_result.trim().length == 0)) {
-        wx.showModal({
-          title: '不能为空',
-          content: '请输入处理结果',
-          showCancel: false
-        })
-        return
-      } else if (!(/^\d+(\.\d+)?$/).test(this.data.form.draft_price)) {
-        wx.showModal({
-          title: '提示',
-          content: '拟定费用填写错误',
-          showCancel: false
-        })
-        return
-      } else if (!(/^\d+(\.\d+)?$/).test(this.data.form.final_price)) {
-        wx.showModal({
-          title: '提示',
-          content: '最终费用填写错误',
           showCancel: false
         })
         return
@@ -339,63 +326,153 @@ Component({
           showCancel: false
         })
         return
-      } else {
-        console.log('成功')
-        if (cs_path == '/save') {
-          request._post(getApp().globalData.api + cs_path, this.data.form, res => {
-            console.log(res)
-            if (res.data.status == 200) {
-              wx.showLoading();
-              wx.hideLoading();
-              setTimeout(() => {
-                wx.showToast({
-                  title: '保存成功',
-                  icon: "success",
-                });
-                setTimeout(() => {
-                  wx.hideToast();
-                }, 2000)
-              }, 0);
-            } else {
-              console.log(res.data)
-            }
-          })
-        } else if (cs_path == '/commit') {
-          let that = this;
+      }
+
+
+
+      let index = 1;
+      for (let i of this.data.form.data) {
+        if (i.hasdevid !== 1) {
           wx.showModal({
             title: '提示',
-            content: '是否提交',
-            success(data) {
-              if (data.confirm) {
-                // console.log('用户点击确定')
-                request._post(getApp().globalData.api + cs_path, that.data.form, res => {
-                  console.log(res)
-                  if (res.data.status == 200) {
-                    wx.showLoading();
-                    wx.hideLoading();
-                    setTimeout(() => {
-                      wx.showToast({
-                        title: '提交成功',
-                        icon: "success",
-                      });
-                      setTimeout(() => {
-                        wx.hideToast();
-                      }, 2000)
-                    }, 0);
-                    that.triggerEvent('commit')
-                  } else {
-                    console.log(res.data)
-                  }
-                })
-              } else if (data.cancel) {
-                console.log('用户点击取消')
-              }
-            }
+            content: `读数表第${index}行发现无机器码的设备`,
+            showCancel: false
           })
-
-
-
+          return
         }
+        if (i.counter >= 1 && i.this_hb_reading != '' && i.this_hb_reading != null) {
+          if (!/^\d+$/.test(i.this_hb_reading)) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行本次黑白读数填写有误`,
+              showCancel: false
+            })
+            return
+          }
+          if (typeof i.this_hb_reading == 'number' ? i.this_hb_reading > 100000000 : parseInt(i.this_hb_reading) > 100000000) {
+            if (!/^\d+$/.test(i.this_hb_reading)) {
+              wx.showModal({
+                title: '提示',
+                content: `读数表第${index}行本次黑白读数过大`,
+                showCancel: false
+              })
+              return
+            }
+          }
+        }
+        if (i.counter >= 2 && i.this_cl_reading != '' && i.this_cl_reading != null) {
+          if (!/^\d+$/.test(i.this_cl_reading)) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行本次彩色读数填写有误`,
+              showCancel: false
+            })
+            return
+          }
+          if (typeof i.this_cl_reading == 'number' ? i.this_cl_reading > 100000000 : parseInt(i.this_cl_reading) > 100000000) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行本次彩色读数过大`,
+              showCancel: false
+            })
+            return
+          }
+        }
+        if (i.counter >= 1 && i.hb_invalid_num != '' && i.hb_invalid_num != null) {
+          if (!/^\d+$/.test(i.hb_invalid_num)) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行黑白无效张数填写有误`,
+              showCancel: false
+            })
+            return
+          }
+          if (typeof i.hb_invalid_num == 'number' ? i.hb_invalid_num > 100000000 : parseInt(i.hb_invalid_num) > 100000000) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行黑白无效张数过大`,
+              showCancel: false
+            })
+            return
+          }
+        }
+
+        if (i.counter >= 1 && i.cl_invalid_num != '' && i.cl_invalid_num != null) {
+          if (!/^\d+$/.test(i.cl_invalid_num)) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行彩色无效张数填写有误`,
+              showCancel: false
+            })
+            return
+          }
+          if (typeof i.cl_invalid_num == 'number' ? i.cl_invalid_num > 100000000 : parseInt(i.cl_invalid_num) > 100000000) {
+            wx.showModal({
+              title: '提示',
+              content: `读数表第${index}行彩色无效张数过大`,
+              showCancel: false
+            })
+            return
+          }
+        }
+        (i.this_time == '' && i.this_time == null) && (i.this_time = this.data.form.arrive_time);
+        index++;
+      }
+
+
+
+      console.log('成功')
+      if (cs_path == '/save') {
+        request._post(getApp().globalData.api + cs_path, this.data.form, res => {
+          console.log(res)
+          if (res.data.status == 200) {
+            wx.showLoading();
+            wx.hideLoading();
+            setTimeout(() => {
+              wx.showToast({
+                title: '保存成功',
+                icon: "success",
+              });
+              setTimeout(() => {
+                wx.hideToast();
+              }, 2000)
+            }, 0);
+          } else {
+            console.log(res.data)
+          }
+        })
+      } else if (cs_path == '/commit') {
+        let that = this;
+        wx.showModal({
+          title: '提示',
+          content: '是否提交',
+          success(data) {
+            if (data.confirm) {
+              // console.log('用户点击确定')
+              request._post(getApp().globalData.api + cs_path, that.data.form, res => {
+                console.log(res)
+                if (res.data.status == 200) {
+                  wx.showLoading();
+                  wx.hideLoading();
+                  setTimeout(() => {
+                    wx.showToast({
+                      title: '提交成功',
+                      icon: "success",
+                    });
+                    setTimeout(() => {
+                      wx.hideToast();
+                    }, 2000)
+                  }, 0);
+                  that.triggerEvent('commit')
+                } else {
+                  console.log(res.data)
+                }
+              })
+            } else if (data.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
       }
     },
     handlefd() {
@@ -428,11 +505,49 @@ Component({
         ['form.draft_price']: e.detail.value
       })
     },
-    final_price(e) {
+    // 本次黑白读数
+    this_hb_reading(e) {
+      console.log(e)
+      let index = e.currentTarget.dataset.index
       this.setData({
-        ['form.final_price']: e.detail.value
+        ['form.data[' + index + '].this_hb_reading']: e.detail.value
       })
+      this.is_code(index, 'hb');
     },
+    // 本次彩色读数
+    this_cl_reading(e) {
+      let index = e.currentTarget.dataset.index
+      this.setData({
+        ['form.data[' + index + '].this_cl_reading']: e.detail.value
+      })
+      this.is_code(index, 'cl');
+    },
+    // 判断是否为空
+    isEmpty(val) {
+      return val == '' || val == null || val == undefined
+    },
+    ifnull(val) {
+      return this.isEmpty(val) ? 0 : val
+    },
+
+
+    // 黑白本次无效张数
+    hb_invalid_num(e) {
+      let index = e.currentTarget.dataset.index
+      this.setData({
+        ['form.data[' + index + '].hb_invalid_num']: e.detail.value
+      })
+      this.is_code(index, 'hb')
+    },
+    // 彩色本次无效张数
+    cl_invalid_num(e) {
+      let index = e.currentTarget.dataset.index
+      this.setData({
+        ['form.data[' + index + '].cl_invalid_num']: e.detail.value
+      })
+      this.is_code(index, 'cl')
+    },
+
     beizu_remark(e) {
       this.setData({
         ['form.remark']: e.detail.value
@@ -443,16 +558,7 @@ Component({
     qianming() {
       // console.log(11)
       wx.navigateTo({
-        url: '../../pages/routePage/signature/signature',
-        success: function (res) {
-          // success
-        },
-        fail: function () {
-          // fail
-        },
-        complete: function () {
-          // complete
-        }
+        url: '../../pages/routePage/signature/signature'
       })
     },
     handleOk() {
@@ -481,6 +587,155 @@ Component({
 
 
       console.log(this.properties.handleData)
+    },
+
+    // 本次使用计算
+    this_use(index, type) {
+      let dyjData = this.data.form.data[index];
+      // 本次使用等于本次读数-上次读数-无效张数
+      let this_use = this.ifnull(dyjData[`this_${type}_reading`]) - this.ifnull(dyjData[`last_${type}_reading`]) - this.ifnull(dyjData[`${type}_invalid_num`])
+      this_use = this_use >= 0 ? this_use : 0
+      this.setData({
+        ['form.data[' + index + '].this_' + type + '_use']: this_use
+      })
+    },
+
+    // 基本计费
+    code_1(index, type) {
+      // 彩色_黑白 费用
+      let sum = 0;
+      console.log(this.data.form.data);
+      // 打印机使用数据
+      let dyjData = this.data.form.data[index];
+      // 月租
+      // let base_price = dyjData.base_price;
+      // sum += base_price;
+      // 本次使用计算
+      this.this_use(index, type)
+      // let base_price = this.data.form.data
+      // 计算打印机计数器有没有超出基本套餐张数 基本张数-本次读数
+      let is_Exceeded = dyjData[`${type}_num`] - dyjData[`this_${type}_use`] >= 0 ? 0 : -(dyjData[`${type}_num`] - dyjData[`this_${type}_use`]) * dyjData[`${type}_over_price`]
+
+      sum += is_Exceeded;
+
+      console.log(sum)
+      this.setData({
+        ['form.data[' + index + '].' + type + '_cost']: sum
+      })
+
+      this.setData({
+        [`price_arr[${index}]`]: this.data.form.data[index].hb_cost + this.data.form.data[index].cl_cost + this.data.form.data[index].base_price
+      })
+      console.log(this.data.price_arr)
+    },
+    
+    code_3(index, type) {
+      let dyj = this.data.form.data[index];
+      this.this_use(index,type)
+      
+      for (var i = 0; i < this.data.form.data.length; i++) {
+        if(this.data.form.data[index].merge_devid == this.data.form.data[i].devid) {
+          this.code_1(i,type)
+          
+          
+        }
+      }
+      
+      let map = { hb: 0, cl: 0 }
+      // 彩色_黑白 费用
+      let sum = 0;
+      console.log(this.data.form.data);
+      // 打印机使用数据
+      let dyjData = this.data.form.data[index];
+      // 月租
+      // let base_price = dyjData.base_price;
+      // sum += base_price;
+      // 本次使用计算
+      this.this_use(index, type)
+      // let base_price = this.data.form.data
+      // 计算打印机计数器有没有超出基本套餐张数 基本张数-本次读数
+      let is_Exceeded = dyjData[`${type}_num`] - dyjData[`this_${type}_use`] >= 0 ? 0 : -(dyjData[`${type}_num`] - dyjData[`this_${type}_use`]) * dyjData[`${type}_over_price`]
+
+      sum += is_Exceeded;
+
+      console.log(sum)
+      this.setData({
+        ['form.data[' + index + '].' + type + '_cost']: sum
+      })
+      console.log(this.data.price_arr)
+    },
+    // 打包计费
+    code_4(index, type) {
+      let dyjData = this.data.form.data[index];
+      // 本次使用计算
+      this.this_use(index, type)
+      let price = dyjData[`this_${type}_use`] * dyjData[`${type}_over_price`]
+      this.setData({
+        ['form.data[' + index + '].' + type + '_cost']: price
+      })
+
+      this.setData({
+        [`price_arr[${index}]`]: this.data.form.data[index].hb_cost + this.data.form.data[index].cl_cost < this.data.form.data[index].base_price ? this.data.form.data[index].base_price : this.data.form.data[index].hb_cost + this.data.form.data[index].cl_cost
+      })
+      console.log(this.data.price_arr)
+    },
+
+    // 固定计费
+    code_5(index, type) {
+      this.setData({
+        ['form.data[' + index + '].' + type + '_cost']: 0
+      })
+      // 本次使用计算
+      this.this_use(index, type)
+      // 月租
+      let base_price = this.data.form.data[index].base_price;
+      this.setData({
+        [`price_arr[${index}]`]: base_price
+      })
+      console.log(this.data.price_arr)
+    },
+
+    // 最终价格计算
+    final_price() {
+      let price = 0
+      this.data.price_arr.forEach(item => {
+        price += item
+      })
+      this.setData({
+        ['form.final_price']: price
+      })
+      // console.log(this.data.form.final_price)
+    },
+    // 判断是哪种计数规则
+    is_code(index, type) {
+      switch (this.data.form.data[index].price_model) {
+        case 1:
+          console.log('code1_标准计费')
+          this.code_1(index, type)
+          this.final_price()  // 计算最终费用
+          break;
+        case 2:
+          console.log('code2_标准计费')
+          this.code_1(index, type)
+          this.final_price()  // 计算最终费用
+          break;
+        case 3:
+          console.log('code3_标准计费')
+          this.code_3(index, type)
+          // this.final_price()  // 计算最终费用
+          break;
+        case 4:
+          console.log('code4_打包计费')
+          this.code_4(index, type)
+          this.final_price()
+          break;
+        case 5:
+          console.log('code5_固定计费')
+          this.code_5(index, type)
+          this.final_price()  // 计算最终费用
+          break;
+      }
+
     }
   }
 })

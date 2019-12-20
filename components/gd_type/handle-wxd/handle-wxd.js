@@ -12,11 +12,29 @@ Component({
     lang: 'zh_CN',
     form: {
       ...getApp().globalData.commonField(),
-      type: 'qtd',
+      type: 'wxd',
+      contract_code: null,
+      contract_bill_code: null,
+      repair_name: null,
+      repair_phone: null,
+      order_time: null,
+      product_id: null,
+      product_name: null,
+      devid: null,
+      machine_address: null,
+      machine_link_name: null,
+      machine_link_phone: null,
+      isRework: 0,
+      accept_way: null,
       service_type: null,
+      breakdown: null,
       service_content: null,
       handle_result: null,
-      draft_price: 0,
+      material_price: 0,
+      repair_price: 0,
+      additional_price: 0,
+      hb_reading: 0,
+      cl_reading: 0,
     },
     imagesrc: [],
     paths: []  // 记录图片本地路径
@@ -25,6 +43,10 @@ Component({
     handleData: {
       type: Object,
       value: {}
+    },
+    shebeiData: {
+      type: Object,
+      value: []
     }
   },
   pageLifetimes: {
@@ -52,7 +74,27 @@ Component({
   lifetimes: {
     attached: function () {
       console.log(this.properties.handleData)
+      console.log(this.properties.shebeiData)
       let data = this.properties.handleData
+      let shebei = this.properties.shebeiData
+      console.log('shebei', shebei)
+      // 设备信息
+      // for (let i of shebei) {
+      //   if (i.counter <= 0) {
+      //     i.total_cost = i.base_price;
+      //     continue;
+      //   }
+      //   let costMap = this.calculate(i, shebei);
+      //   i.total_cost = costMap.total;
+      //   i.hb_cost = costMap.hb;
+      //   i.cl_cost = costMap.cl;
+      // }
+      // this.data.form.data = shebei;
+      this.setData({
+        ['form.data']: shebei
+      })
+      console.log(this.data.form.data)
+      // 基础信息
       Object.keys(data).forEach(key => {
         if (key in this.data.form && !['imageList'].includes(key)) {
           // this.data.form[key] = data[key]
@@ -108,6 +150,13 @@ Component({
     },
   },
   methods: {
+    // 判断是否为空
+    isEmpty(val) {
+      return val == '' || val == null || val == undefined
+    },
+    ifnull(val) {
+      return this.isEmpty(val) ? 0 : val
+    },
     close(e) {
       let that = this;
       console.log(that.data.paths[e.currentTarget.dataset.index])
@@ -250,18 +299,20 @@ Component({
     timeformat(timestr) {
       return Date.parse(new Date(timestr)) / 1000
     },
-
+    // 保存
     save() {
       // console.log(this.timeformat('2014-07-10 10:21:12'))
       // console.log(this.data.form.draft_price)
       this.saveORcommit('/save')
 
     },
+    // 提交
     commit() {
       this.saveORcommit('/commit')
     },
     saveORcommit(cs_path) {
-      if (this.data.form.arrive_time == '') {
+
+      if (this.isEmpty(this.data.form.arrive_time)) {
         wx.showModal({
           title: '提示',
           content: '请选择到达时间',
@@ -269,7 +320,7 @@ Component({
         })
         return
       }
-      if (this.data.form.leave_time == '') {
+      if (this.isEmpty(this.data.form.leave_time)) {
         wx.showModal({
           title: '提示',
           content: '请选择离开时间',
@@ -285,31 +336,7 @@ Component({
         })
         return
       }
-      if (this.data.form.handle_result == "" || (this.data.form.handle_result.length > 0 && this.data.form.handle_result.trim().length == 0)) {
-        wx.showModal({
-          title: '不能为空',
-          content: '请输入处理结果',
-          showCancel: false
-        })
-        return
-      }
-      if (!(/^\d+(\.\d+)?$/).test(this.data.form.draft_price)) {
-        wx.showModal({
-          title: '提示',
-          content: '拟定费用填写错误',
-          showCancel: false
-        })
-        return
-      }
-      if (!(/^\d+(\.\d+)?$/).test(this.data.form.final_price)) {
-        wx.showModal({
-          title: '提示',
-          content: '最终费用填写错误',
-          showCancel: false
-        })
-        return
-      }
-      if (this.data.form.remark == "" || (this.data.form.remark.length > 0 && this.data.form.remark.trim().length == 0)) {
+      if (this.isEmpty(this.data.form.service_content)) {
         wx.showModal({
           title: '不能为空',
           content: '请输入备注内容',
@@ -317,7 +344,65 @@ Component({
         })
         return
       }
-
+      if (this.isEmpty(this.data.form.handle_result)) {
+        wx.showModal({
+          title: '不能为空',
+          content: '请选择维修结果',
+          showCancel: false
+        })
+        return
+      }
+      if (this.isEmpty(this.data.form.remark)) {
+        wx.showModal({
+          title: '不能为空',
+          content: '备注不能为空',
+          showCancel: false
+        })
+        return
+      }
+      if (this.data.form.repair_price >= 100000000) {
+        wx.showModal({
+          title: '提示',
+          content: '维修费过大',
+          showCancel: false
+        })
+        return
+      }
+      if (this.data.form.additional_price >= 100000000) {
+        wx.showModal({
+          title: '提示',
+          content: '附加费过大',
+          showCancel: false
+        })
+        return
+      }
+      for (let i of this.data.form.data) {
+        if (this.isEmpty(i.pay_method)) {
+          wx.showModal({
+            title: '提示',
+            content: `第${index}个耗材没有选择付款方式`,
+            showCancel: false
+          })
+          return
+        }
+        if (!(/^\d+(\.\d+)?$/).test(i.price)) {
+          wx.showModal({
+            title: '提示',
+            content: `第${index}个耗材单价有误`,
+            showCancel: false
+          })
+          return
+        }
+        if (!(/^\d+$/).test(i.num)) {
+          wx.showModal({
+            title: '提示',
+            content: `第${index}个耗材数量有误`,
+            showCancel: false
+          })
+          return
+        }
+        index++;
+      }
 
       console.log('成功')
       if (cs_path == '/save') {
@@ -374,6 +459,7 @@ Component({
       }
     },
     handlefd() {
+      console.log(11)
       this.setData({
         visiblefd: true
       });
@@ -395,6 +481,16 @@ Component({
       // console.log(e)
       this.setData({
         ['form.handle_result']: e.detail.value
+      })
+    },
+    hb_reading(e) {
+      this.setData({
+        ['form.hb_reading']: e.detail.value
+      })
+    },
+    cl_reading(e) {
+      this.setData({
+        ['form.cl_reading']: e.detail.value
       })
     },
     draft_price(e) {

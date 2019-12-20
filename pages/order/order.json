@@ -8,6 +8,7 @@
       "wux-badge": "../../dist/badge/index",
       "work-list": "/components/work-list/work-list",
       "handle": "/components/gd_type/handle-qtd/handle",
-      "handle-cbd": "/components/gd_type/handle-cbd/handle-cbd"
+      "handle-cbd": "/components/gd_type/handle-cbd/handle-cbd",
+      "handle-wxd": "/components/gd_type/handle-wxd/handle-wxd"
   }
 }

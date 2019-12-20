@@ -1,0 +1,131 @@
+@import '../../../app.wxss';
+
+.handle {
+    font-size: 28rpx;
+    /* padding-bottom: 250rpx; */
+}
+.basic {
+    margin: 15rpx;
+    padding: 15rpx;
+    box-shadow: 0 3px 6px rgba(110,110,110,.5);
+}
+.title {
+    font-size: 30rpx;
+    font-weight: 700;
+    margin-left: 20rpx;
+    position: relative;
+    line-height: 66rpx;
+}
+.title_bl {
+    width: 10rpx;
+    height: 26rpx;
+    border-radius: 5rpx;
+    background-color: #2c93ef;
+    position: absolute;
+    top: 20rpx;
+    left: -15rpx;
+}
+.li {
+    display: flex;
+    border-bottom: 1px dotted #ededed;
+    margin: 10rpx 0;
+}
+
+.f_l {
+    flex: 2;
+}
+.f_r {
+    flex: 9;
+    text-align: right;
+}
+._l {
+    flex: 5;
+}
+._r {
+    flex: 9;
+    text-align: right;
+}
+
+.options {
+    display: inline-block;
+    padding: 2rpx;
+    margin-top: 50rpx;
+    margin-left: 13%;
+}
+
+button:first-child {
+    background-color: #2cc461;
+    color: #fff;
+}
+
+textarea {
+    height: 150rpx!important;
+    width: 100%;
+}
+
+.scroll {
+    max-height: 250rpx;
+}
+
+.btn button {
+    padding: 0;
+}
+
+button.option {
+    margin: 0 30rpx!important;
+    box-shadow: 0 2px 4px rgba(110,110,110,.5);
+}
+
+.autograph {
+    margin-left: 2%;
+    width: 96%;
+    height: 200px;
+    box-shadow: 0px 2px 5px rgba(110,110,110,.5);
+}
+.qm {
+    position: relative;
+    margin-top: 40rpx;
+}
+
+.qmtitle {
+    position: absolute;
+    left: 15rpx;
+    top: -24rpx;
+    font-size: 30rpx;
+    font-weight: 700;
+    border-radius: 8rpx;
+    padding: 2rpx;
+    background-color: #6e6e6e;
+    color: #fff;
+}
+
+.iconfont {
+    font-size: 150rpx;
+    /* font-weight: 700; */
+    color: #666;
+    margin: 15rpx;
+}
+.photo {
+    margin: 15rpx;
+    padding: 20rpx 0;
+    box-shadow: 0px 2px 5px rgba(110,110,110,.5);
+}
+.photoimage {
+    position: relative;
+    width: 150rpx;
+    height: 150rpx;
+    display: inline-block;
+    margin: 0 15rpx;
+}
+.imgclass {
+    width: 150rpx;
+    height: 150rpx;
+    margin: 15rpx;
+}
+.closeimage {
+    position: absolute;
+    right: -46rpx;
+    top: -24rpx;
+    font-size: 40rpx;
+    color: #ff3300;
+}

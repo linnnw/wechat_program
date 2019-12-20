@@ -14,8 +14,8 @@ var filter = {
   },
   filterTime1: function (val) {
     // val = val.replace(/-/g, "/");
-      return Date.parse(val);
-  
+    return Date.parse(val);
+
   },
   formatDuring: function (mss) {
     if (mss != null && mss != '' && mss != undefined) {
@@ -102,10 +102,30 @@ var filter = {
         return 'err'
     }
   },
-  objIsEmpty: function(obj) {
+  objIsEmpty: function (obj) {
     return JSON.stringify(obj) != '{}';
+  },
+  showPackage: function (row) {
+    if (filter.isEmpty(row.price_model)) return '无';
+    else if (row.counter <= 0 || row.price_model === 5) return row.price_model_name + '，基本价格：' + row.base_price + '元';
+    else if (row.price_model === 3) return row.price_model_name;
+    else if (row.counter === 1) {
+      if (row.price_model == 1 || row.price_model == 2) {
+        return row.price_model_name + ',基本价格：' + row.base_price + '元，黑白张数：' + row.hb_num + '张，黑白超出单价：' + row.hb_over_price + '元/张';
+      } else if (row.price_model === 4) return row.price_model_name + ',基本价格：' + row.base_price + '元，黑白单价：' + row.hb_over_price + '元/张';
+    } else if (row.counter === 2) {
+      if (row.price_model == 1 || row.price_model == 2) {
+        return row.price_model_name + ',基本价格：' + row.base_price + '元，黑白张数：' + row.hb_num + '张，黑白超出单价：' + row.hb_over_price + '元/张，彩色张数：' + row.cl_num + '张，彩色超出单价：' + row.cl_over_price + '元/张';
+      } else if (row.price_model === 4) return row.price_model_name + ',基本价格：' + row.base_price + '元，黑白单价：' + row.hb_over_price + '元/张，彩色单价：' + row.cl_over_price + '元/张';
+    }
+  },
+  isEmpty: function (val) {
+    return val == '' || val == null || val == undefined
   }
 }
+
+
+
 module.exports = {
   filterTime: filter.filterTime,
   filterTime1: filter.filterTime1,
@@ -114,6 +134,8 @@ module.exports = {
   filterclass: filter.filterclass,
   filterstr: filter.filterstr,
   filterstatus: filter.filterstatus,
-  filterprinter:filter.filterprinter,
-  objIsEmpty: filter.objIsEmpty
+  filterprinter: filter.filterprinter,
+  objIsEmpty: filter.objIsEmpty,
+  showPackage: filter.showPackage,
+  test2: filter.test2
 }
