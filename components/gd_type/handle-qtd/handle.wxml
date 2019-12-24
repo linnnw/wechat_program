@@ -141,7 +141,7 @@
     <view class="photo">
       <text class="iconfont iconpaizhao" bindtap="photo"></text>
       <view class="photoimage" wx:for="{{imagesrc}}" wx:key="{{index}}">
-        <image class="imgclass" src="{{item.path}}" mode="aspectFill"></image>
+        <image bindtap="previewImg" data-index="{{index}}" class="imgclass" src="{{item}}" mode="aspectFill"></image>
         <text class="closeimage iconfont iconguanbi" data-index="{{index}}" bindtap="close"></text>
       </view>
     </view>

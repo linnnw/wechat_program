@@ -52,7 +52,7 @@ Component({
         if (user.status == 1) {
           getApp().globalData.login_show = true
           request._post('/workOrder/api/getHandling', {}, res => {
-            console.log(res)
+            // console.log(res)
             if (JSON.stringify(res.data.row) == '{}' || res.data.row == undefined) {
               getApp().globalData.dot = false
             } else {

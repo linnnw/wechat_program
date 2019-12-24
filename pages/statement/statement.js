@@ -40,11 +40,19 @@ Page({
     ecBar1: {},
     ecBar2: {},
     ecScatter: {},
-    ecScatter1: {}
+    ecScatter1: {},
+    chardata: []
+  },
+  jumpToCur() {
+    console.log('jumpToCur')
   },
   // 获取echarts数据
   getEchartsData() {
     request._post('/getChartData', {}, res => {
+      console.log(res)
+      this.setData({
+        chardata: res.data.data
+      })
       let chartdata = res.data.data;
       // console.log(chartdata)
       if (chartdata != null && chartdata != undefined) {

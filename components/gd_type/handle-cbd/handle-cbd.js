@@ -1,6 +1,30 @@
 // const gd_method = require('../../../utils/gd_method')
 import request from '../../../utils/request.js'
-
+const PARAMETER = {
+  OSS_PREFIX: 'https://yunqi-file.oss-cn-shenzhen.aliyuncs.com/',
+  WEB_HOST: 'http://localhost:3012/yc',
+  MAX_INTEGER: 100000000
+};
+const REGULAR = {
+  INTEGER: /^\d+$/,//匹配整数
+  FLOAT: /^\d+(\.\d+)?$/,//匹配浮点数
+  EMAIL: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,//邮箱校验
+  PHONE: /^1(3|4|5|7|8)\d{9}$/,//手机号校验
+  TEL: /^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$/,//校验座机号
+  PHONE_AND_TEL: /^((0\d{2,3}-\d{7,8})|(0\d{9,11})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/,//校验手机或座机
+  CHINESE: /^[\u4E00-\u9FA5]+$/,//检验是否全中文
+  IDENTITY_CARD: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,//校验身份证
+  CHINESE_NAME: /^[\u4e00-\u9fa5]{2,5}$/,//校验中国人姓名
+  POST_CODE: /^[1-9][0-9]{5}$/,//校验邮编
+  TRIM: /^\s+|\s+$/g,//匹配前后两端的空格，和replace搭配去除前后空格
+  PICTURE: /(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/,
+  VIDEO: /(.*)\.(avi|mov|mpeg|mpg|ram|qt|wmv|mp4|ogg|AVI|MOV|MPEG|MPG|RAM|QT|WMV|MP4|OGG)$/,
+  TEXT: /(.*)\.(txt|TXT)$/,
+  DOC: /(.*)\.(doc|docx|DOC|DOCX)$/,
+  EXCEL: /(.*)\.(xls|xlsx|XLS|XLSX)$/,
+  PDF: /(.*)\.(pdf|PDF)$/,
+  PPT: /(.*)\.(ppt|PPT)$/
+};
 Component({
   data: {
     visiblefd: false,
@@ -22,7 +46,7 @@ Component({
       client_phone: null,
       cost_sum: 0
     },
-
+    code_2_3_price: {},
     imagesrc: [],
     paths: []  // 记录图片本地路径
   },
@@ -59,6 +83,16 @@ Component({
   },
   lifetimes: {
     attached: function () {
+      console.log(this.properties.handleData)
+      let temp_list = this.transferImageList(this.properties.handleData.imageList)
+      let imglist = [];
+      for (let i = 0; i < temp_list.length; i++) {
+        imglist.push(temp_list[i].url)
+      }
+      this.setData({
+        imagesrc: imglist
+      })
+      console.log(this.data.imagesrc)
       let data = this.properties.handleData
       let shebei = this.properties.shebeiData
 
@@ -110,7 +144,7 @@ Component({
           show: true
         })
         request._post('/workOrder/api/getActionHistory', { "id": item.id, "type": item.type, "action": "返单" }, res => {
-          console.log(res)
+          // console.log(res)
           if (res.data.status == 200) {
             let fandanData = []
             if (res.data.list != null && res.data.list != undefined) {
@@ -133,17 +167,69 @@ Component({
     },
   },
   methods: {
+    transferImageList(imageList) {
+      console.log(imageList)
+      if (this.isEmpty(imageList)) return [];
+      let temp_list = [];
+      let tp = Array.isArray(imageList) ? imageList.map(i => i.url || i) : imageList.split(',');
+      console.log(tp)
+      for (let item of tp) {
+        if (this.isEmpty(item)) continue;
+        let name_arr = item.replace(PARAMETER.OSS_PREFIX, '').split('/'),
+          name = name_arr[name_arr.length - 1].split('-separate-');
+        let x = item.split('-create_time-');
+        let fileName = decodeURIComponent(name[name.length - 1].split('-create_time-')[0]),
+          url = x[0],
+          downloadUrl = x[0],
+          create_time = x[1] || 0;
+        create_time = parseInt(create_time);
+        if (REGULAR.PICTURE.test(fileName)) url = x[0];
+        else if (REGULAR.DOC.test(fileName)) url = '/images/fileExample/doc.png';
+        else if (REGULAR.EXCEL.test(fileName)) url = '/images/fileExample/excel.png';
+        else if (REGULAR.VIDEO.test(fileName)) url = '/images/fileExample/video.png';
+        else if (REGULAR.PDF.test(fileName)) url = '/images/fileExample/pdf.png';
+        else if (REGULAR.PPT.test(fileName)) url = '/images/fileExample/ppt.png';
+        else if (REGULAR.TEXT.test(fileName)) url = '/images/fileExample/txt.png';
+        else url = '/images/fileExample/unknown.png';
+        temp_list.push({
+          name: fileName,
+          url,
+          downloadUrl,
+          create_time,
+          loading: false
+        });
+      }
+      temp_list.sort((a, b) => {
+        return a.create_time < b.create_time ? -1 : 1
+      });
+      return temp_list
+    },
     close(e) {
-      let that = this;
-      console.log(that.data.paths[e.currentTarget.dataset.index])
+      console.log(e)
+      let file = this.transferImageList(this.properties.handleData.imageList)
+      let imgindex = e.currentTarget.dataset.index - file.length
+      file = file[e.currentTarget.dataset.index]
+      
       let wen_host = wx.getStorageSync('user').WEB_HOST
-      console.log(e.currentTarget.dataset.index)
+      let that = this;
       let imgdata = this.data.imagesrc;
 
+      // //若是删除已上传至OSS的图片，则将url传出
+      if(file != undefined && file != null){
+        if (file.downloadUrl && file.downloadUrl.indexOf(PARAMETER.OSS_PREFIX) === 0) {
+          let deleteUrl = file.create_time && file.create_time !== 0 ? file.downloadUrl + '-create_time-' + file.create_time : file.downloadUrl;
+          // this.$emit('delete-oss-attachment', deleteUrl);
+          // console.log(deleteUrl)
+          this.data.form.deleteImageList.push(deleteUrl)
+        }
+      } else {
+        this.data.form.uploadImageList.splice(imgindex,1)
+      }
+      // console.log(that.data.form.uploadImageList[imgindex])
       wx.request({
         url: wen_host + '/public/attachment/deleteImage',
         data: {
-          'path': that.data.paths[e.currentTarget.dataset.index]
+          path: that.data.form.uploadImageList[imgindex]
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         // header: {}, // 设置请求的 header
@@ -151,6 +237,8 @@ Component({
           // success
           console.log(res)
           if (res.data.status == 200) {
+            // file.blobUrl && URL.revokeObjectURL(file.blobUrl);
+
             imgdata.splice(e.currentTarget.dataset.index, 1)
             that.setData({
               imagesrc: imgdata
@@ -163,34 +251,30 @@ Component({
         }
       })
 
+
     },
+    // 图片上传
     photo() {
       let wen_host = wx.getStorageSync('user').WEB_HOST
       console.log(wen_host)
       let that = this;
-
-
-
-      // wx.chooseImage({
-      //   count: 9,
-      //   sizeType: ['original', 'compressed'],
-      //   sourceType: ['album', 'camera'],
-      //   success (res) {
-      //     // tempFilePath可以作为img标签的src属性显示图片
-      //     const tempFilePaths = res
-      //     // that.setData({
-      //     //   imagesrc: tempFilePaths
-      //     // })
-      //     console.log(tempFilePaths)
-      //   }
-      // })
-
-      wx.chooseMessageFile({
-        count: 10,
-        type: 'image',
+      wx.chooseImage({
+        count: 5,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
         success(res) {
+          console.log(res)
+          if(that.data.imagesrc.length >= 10) {
+            console.log(10)
+            wx.showModal({
+              title: '提示',
+              content: '最多10张',
+              showCancel: false
+            })
+            return
+          }
           // tempFilePath可以作为img标签的src属性显示图片
-          const tempFilePaths = res.tempFiles;
+          const tempFilePaths = res.tempFilePaths;
           that.setData({
             imagesrc: that.data.imagesrc.concat(tempFilePaths)
           })
@@ -203,13 +287,13 @@ Component({
           for (var i = 0; i < that.data.imagesrc.length; i++) {
             wx.uploadFile({
               url: wen_host + '/public/attachment/uploadImage',
-              filePath: that.data.imagesrc[i].path,
+              filePath: that.data.imagesrc[i],
               name: 'file',
               // formData: {
               //   'user': 'test'
               // },
               success(res) {
-                // console.log(res)
+                console.log(res)
                 let data = JSON.parse(res.data)
                 if (data.status == 200) {
                   // let imgdata = JSON.parse(data);
@@ -217,10 +301,16 @@ Component({
                   console.log(path_str)
                   //do something
                   that.data.paths.push(path_str)
+                  console.log(that.data.paths)
+                  that.setData({
+                    ['form.uploadImageList']: that.data.paths
+                  })
+                  console.log(that.data.form.uploadImageList)
                 }
               }
             })
           }
+
           // wx.request({
           //   url: wen_host + '/public/attachment/uploadMultiple',
           //   data,
@@ -250,6 +340,22 @@ Component({
         fail: err => {
           console.log(err)
         }
+      })
+
+    },
+
+    // 预览图片
+    previewImg(e) {
+      //获取当前图片的下标
+      var index = e.currentTarget.dataset.index;
+      console.log(index)
+      //所有图片
+      var imgs = this.data.imagesrc;
+      wx.previewImage({
+        //当前显示图片
+        current: imgs[index],
+        //所有图片
+        urls: imgs
       })
     },
     onConfirm(e) {
@@ -524,7 +630,7 @@ Component({
     },
     // 判断是否为空
     isEmpty(val) {
-      return val == '' || val == null || val == undefined
+      return val == '' || val == null || val == undefined || val == NaN
     },
     ifnull(val) {
       return this.isEmpty(val) ? 0 : val
@@ -604,7 +710,7 @@ Component({
     code_1(index, type) {
       // 彩色_黑白 费用
       let sum = 0;
-      console.log(this.data.form.data);
+      // console.log(this.data.form.data);
       // 打印机使用数据
       let dyjData = this.data.form.data[index];
       // 月租
@@ -618,7 +724,7 @@ Component({
 
       sum += is_Exceeded;
 
-      console.log(sum)
+      // console.log(sum)
       this.setData({
         ['form.data[' + index + '].' + type + '_cost']: sum
       })
@@ -628,40 +734,63 @@ Component({
       })
       console.log(this.data.price_arr)
     },
-    
+    // 合并计费
+    code_2(index, type) {
+      let dyjData = this.data.form.data[index];
+      this.this_use(index, type)
+      //  this.data.form.data[index].this_hb_use
+      let hb_cl_sum = [0, 0];
+      for (let i = 0; i < this.data.form.data.length; i++) {
+        if (this.data.form.data[i].merge_devid == this.data.form.data[index].devid) {
+          hb_cl_sum[0] += this.data.form.data[i].this_hb_use
+          hb_cl_sum[1] += this.data.form.data[i].this_cl_use
+        }
+
+      }
+
+      let total = [];
+      total[0] = this.data.form.data[index].this_hb_use + hb_cl_sum[0]
+      total[1] = this.data.form.data[index].this_cl_use + hb_cl_sum[1]
+      let price = this.sum_this_use(index, total)
+      this.setData({
+        [`price_arr[${index}]`]: price[0] + price[1] + this.data.form.data[index].base_price
+      })
+      console.log(this.data.price_arr)
+    },
+    // 总张数计算
+    sum_this_use(index, num) {
+      let hb_price = this.data.form.data[index].hb_num - num[0] >= 0 ? 0 : -(this.data.form.data[index].hb_num - num[0]) * this.data.form.data[index].hb_over_price
+      let cl_price = this.data.form.data[index].cl_num - num[1] >= 0 ? 0 : -(this.data.form.data[index].cl_num - num[1]) * this.data.form.data[index].cl_over_price
+      return [hb_price, cl_price]
+    },
+    // 合计计费
     code_3(index, type) {
-      let dyj = this.data.form.data[index];
-      this.this_use(index,type)
-      
-      for (var i = 0; i < this.data.form.data.length; i++) {
-        if(this.data.form.data[index].merge_devid == this.data.form.data[i].devid) {
-          this.code_1(i,type)
-          
-          
+      this.this_use(index, type);
+      let parentuse = [0, 0];
+      let chiluse = [0, 0];
+      let _i = 0
+      // this.data.form.data[index].this_hb_use
+      for (let i = 0; i < this.data.form.data.length; i++) {
+        if (this.data.form.data[i].devid == this.data.form.data[index].merge_devid) {
+          _i = i;
+          parentuse[0] += this.data.form.data[i].this_hb_use
+          parentuse[1] += this.data.form.data[i].this_cl_use
+        }
+        if (this.data.form.data[i].merge_devid == this.data.form.data[index].merge_devid) {
+          chiluse[0] += this.data.form.data[i].this_hb_use
+          chiluse[1] += this.data.form.data[i].this_cl_use
         }
       }
-      
-      let map = { hb: 0, cl: 0 }
-      // 彩色_黑白 费用
-      let sum = 0;
-      console.log(this.data.form.data);
-      // 打印机使用数据
-      let dyjData = this.data.form.data[index];
-      // 月租
-      // let base_price = dyjData.base_price;
-      // sum += base_price;
-      // 本次使用计算
-      this.this_use(index, type)
-      // let base_price = this.data.form.data
-      // 计算打印机计数器有没有超出基本套餐张数 基本张数-本次读数
-      let is_Exceeded = dyjData[`${type}_num`] - dyjData[`this_${type}_use`] >= 0 ? 0 : -(dyjData[`${type}_num`] - dyjData[`this_${type}_use`]) * dyjData[`${type}_over_price`]
-
-      sum += is_Exceeded;
-
-      console.log(sum)
+      console.log(parentuse)
+      console.log(chiluse)
+      let total = [];
+      total[0] = parentuse[0] + chiluse[0]
+      total[1] = parentuse[1] + chiluse[1]
+      let price = this.sum_this_use(_i, total);
       this.setData({
-        ['form.data[' + index + '].' + type + '_cost']: sum
+        [`price_arr[${_i}]`]: price[0] + price[1] + this.data.form.data[_i].base_price
       })
+      console.log(price[0] + price[1] + this.data.form.data[_i].base_price)
       console.log(this.data.price_arr)
     },
     // 打包计费
@@ -716,13 +845,13 @@ Component({
           break;
         case 2:
           console.log('code2_标准计费')
-          this.code_1(index, type)
+          this.code_2(index, type)
           this.final_price()  // 计算最终费用
           break;
         case 3:
           console.log('code3_标准计费')
           this.code_3(index, type)
-          // this.final_price()  // 计算最终费用
+          this.final_price()  // 计算最终费用
           break;
         case 4:
           console.log('code4_打包计费')

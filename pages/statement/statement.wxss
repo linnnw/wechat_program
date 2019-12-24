@@ -1,43 +1,53 @@
+.span {
+    height: 140rpx;
+    display: inline-block;
+    width: 46%;
+    margin: 15rpx;
+    border-radius: 8rpx;
+    color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 .echar {
     width: 100%;
 }
 
 .mychart-dom-multi-bar {
     position: absolute;
-    top: 2%;
-    bottom: 52%;
+    top: 35%;
+    bottom: 13%;
     left: 0;
     right: 0;
 }
 
 .mychart-dom-multi-scatter {
     position: absolute;
-    top: 55%;
-    bottom: 0;
+    top: 95%;
+    bottom: -35%;
     left: 0;
     right: 0;
 }
 
 .mychart-dom-multi-scatter1 {
     position: absolute;
-    top: 105%;
-    bottom: -50%;
+    top: 145%;
+    bottom: -80%;
     left: 0;
     right: 0;
 }
 
 .mychart-dom-multi-bar1 {
     position: absolute;
-    top: 155%;
-    bottom: -105%;
+    top: 190%;
+    bottom: -145%;
     left: 0;
     right: 0;
 }
 
 .mychart-dom-multi-bar2 {
     position: absolute;
-    top: 215%;
-    bottom: -165%;
+    top: 255%;
+    bottom: -210%;
     left: 0;
     right: 0;
 }
@@ -46,5 +56,5 @@
     width: 100%;
     background-color: #fff;
     position: absolute;
-    top: 265%;
+    top: 315%;
 }

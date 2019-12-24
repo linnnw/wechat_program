@@ -4,6 +4,7 @@
   </textarea>
 </i-modal>
 
+
 <view class="handle">
   <view class="body">
     <view class="basic">
@@ -102,10 +103,32 @@
 
       <view class="li">
         <view class="_l">处理结果</view>
-        <view class="_r">{{form.isRework===1?'是':'否'}}</view>
+        <view class="_r">
+          <!-- {{form.isRework===1?'是':'否'}} -->
+
+
+        </view>
+        <view class="section">
+
+          <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+            <view class="picker">
+              　　　　　{{array[index]}}
+            </view>
+          </picker>
+        </view>
+
+
       </view>
     </view>
-
+    <!-- <view class="basic">
+      <view class="section">
+        <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+          <view class="picker">
+            当前选择：{{array[index]}}
+          </view>
+        </picker>
+      </view>
+    </view> -->
 
 
     <view class="basic">
@@ -119,15 +142,21 @@
       </view>
       <view class="li">
         <view class="_l">维修费</view>
-        <view class="_r">{{form.repair_price}}</view>
+        <view class="_r">
+          <input type="text" value="{{form.repair_price}}" bindinput="repair_price" data-index="{{index}}"
+            placeholder="请输入维修费" style="text-align: right;" />
+        </view>
       </view>
       <view class="li">
         <view class="_l">附加费</view>
-        <view class="_r">{{form.additional_price}}</view>
+        <view class="_r">
+          <input type="text" value="{{form.additional_price}}" bindinput="additional_price" data-index="{{index}}"
+            placeholder="请输入附加费" style="text-align: right;" />
+        </view>
       </view>
       <view class="li">
         <view class="_l">总费用</view>
-        <view class="_r">{{form.final_price}}</view>
+        <view class="_r">{{form.final_price == null? 0 : form.final_price}}</view>
       </view>
 
     </view>
@@ -140,25 +169,22 @@
       <view class="li">
         <view class="_l">相关备注</view>
         <view class="_r">
-          <input type="text" value="{{form.remark}}" 
-            bindinput="beizu_remark" data-index="{{index}}" placeholder="请输入备注"
+          <input type="text" value="{{form.remark}}" bindinput="beizu_remark" data-index="{{index}}" placeholder="请输入备注"
             style="text-align: right;" />
         </view>
       </view>
       <view class="li">
         <view class="_l">黑白读数</view>
         <view class="_r">
-          <input type="text" value="{{form.hb_reading}}" 
-            bindinput="hb_reading" data-index="{{index}}" placeholder="请输入读数"
-            style="text-align: right;" />
+          <input type="text" value="{{form.hb_reading}}" bindinput="hb_reading" data-index="{{index}}"
+            placeholder="请输入读数" style="text-align: right;" />
         </view>
       </view>
       <view class="li">
         <view class="_l">彩色读数</view>
         <view class="_r">
-          <input type="text" value="{{form.cl_reading}}" 
-            bindinput="cl_reading" data-index="{{index}}" placeholder="请输入读数"
-            style="text-align: right;" />
+          <input type="text" value="{{form.cl_reading}}" bindinput="cl_reading" data-index="{{index}}"
+            placeholder="请输入读数" style="text-align: right;" />
         </view>
       </view>
     </view>
@@ -212,7 +238,7 @@
     <view class="photo">
       <text class="iconfont iconpaizhao" bindtap="photo"></text>
       <view class="photoimage" wx:for="{{imagesrc}}" wx:key="{{index}}">
-        <image class="imgclass" src="{{item.path}}" mode="aspectFill"></image>
+        <image class="imgclass" src="{{item}}" mode="aspectFill"></image>
         <text class="closeimage iconfont iconguanbi" data-index="{{index}}" bindtap="close"></text>
       </view>
     </view>
@@ -225,4 +251,3 @@
     <button class="option" size="mini" bind:tap="commit">提交</button>
   </view>
 </view>
-
