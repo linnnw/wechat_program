@@ -143,14 +143,14 @@
       <view class="li">
         <view class="_l">维修费</view>
         <view class="_r">
-          <input type="text" value="{{form.repair_price}}" bindinput="repair_price" data-index="{{index}}"
+          <input type="text" value="{{form.repair_price}}" bindblur="if_null"  bindinput="repair_price" data-index="{{index}}"
             placeholder="请输入维修费" style="text-align: right;" />
         </view>
       </view>
       <view class="li">
         <view class="_l">附加费</view>
         <view class="_r">
-          <input type="text" value="{{form.additional_price}}" bindinput="additional_price" data-index="{{index}}"
+          <input type="text" value="{{form.additional_price}}" bindblur="if_null" bindinput="additional_price" data-index="{{index}}"
             placeholder="请输入附加费" style="text-align: right;" />
         </view>
       </view>
@@ -176,14 +176,14 @@
       <view class="li">
         <view class="_l">黑白读数</view>
         <view class="_r">
-          <input type="text" value="{{form.hb_reading}}" bindinput="hb_reading" data-index="{{index}}"
+          <input type="text" value="{{form.hb_reading}}" bindblur="if_null" bindinput="hb_reading" data-index="{{index}}"
             placeholder="请输入读数" style="text-align: right;" />
         </view>
       </view>
       <view class="li">
         <view class="_l">彩色读数</view>
         <view class="_r">
-          <input type="text" value="{{form.cl_reading}}" bindinput="cl_reading" data-index="{{index}}"
+          <input type="text" value="{{form.cl_reading}}" bindblur="if_null" bindinput="cl_reading" data-index="{{index}}"
             placeholder="请输入读数" style="text-align: right;" />
         </view>
       </view>
@@ -238,7 +238,7 @@
     <view class="photo">
       <text class="iconfont iconpaizhao" bindtap="photo"></text>
       <view class="photoimage" wx:for="{{imagesrc}}" wx:key="{{index}}">
-        <image class="imgclass" src="{{item}}" mode="aspectFill"></image>
+        <image bindtap="previewImg" data-index="{{index}}" class="imgclass" src="{{item}}" mode="aspectFill"></image>
         <text class="closeimage iconfont iconguanbi" data-index="{{index}}" bindtap="close"></text>
       </view>
     </view>

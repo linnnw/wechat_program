@@ -140,7 +140,7 @@
         <view class="li">
           <view class="_l">本次读数</view>
           <view class="_r">
-            <input type="text" value="{{item.this_hb_reading}}" 
+            <input type="text" value="{{item.this_hb_reading}}"  bindblur="if_null"
             bindinput="this_hb_reading" data-index="{{index}}" placeholder="请输入本次读数"
             style="text-align: right;" />
           </view>
@@ -148,7 +148,7 @@
         <view class="li">
           <view class="_l">无效张数</view>
           <view class="_r">
-            <input type="text" value="{{item.hb_invalid_num}}" data-index="{{index}}" bindinput="hb_invalid_num" placeholder="请输入无效张数"
+            <input type="text" value="{{item.hb_invalid_num}}" data-index="{{index}}" bindblur="if_null" bindinput="hb_invalid_num" placeholder="请输入无效张数"
             style="text-align: right;" />
           </view>
         </view>
@@ -184,7 +184,7 @@
           <view class="_l">本次读数</view>
           <view class="_r">
             <input type="text" value="{{item.this_cl_reading}}" 
-            bindinput="this_cl_reading" data-index="{{index}}" placeholder="请输入本次读数"
+            bindinput="this_cl_reading" bindblur="if_null" data-index="{{index}}" placeholder="请输入本次读数"
             style="text-align: right;" />
           </view>
         </view>
@@ -192,7 +192,7 @@
           <view class="_l">无效张数</view>
           <view class="_r">
             <input type="text" value="{{item.cl_invalid_num}}" 
-            bindinput="cl_invalid_num" data-index="{{index}}" placeholder="请输入本次读数"
+            bindinput="cl_invalid_num" bindblur="if_null" data-index="{{index}}" placeholder="请输入本次读数"
             style="text-align: right;" />
           </view>
         </view>
@@ -231,9 +231,11 @@
     </view>
 
     <view class="photo">
-      <text class="iconfont iconpaizhao" bindtap="photo"></text>
+      <view class="photoimage">
+        <text class="iconfont iconpaizhao" bindtap="photo"></text>
+      </view>
       <view class="photoimage" wx:for="{{imagesrc}}" wx:key="{{index}}">
-        <image class="imgclass" src="{{item}}" mode="aspectFill"></image>
+        <image class="imgclass" bindtap="previewImg" data-index="{{index}}" src="{{item}}" mode="aspectFill"></image>
         <text class="closeimage iconfont iconguanbi" data-index="{{index}}" bindtap="close"></text>
       </view>
     </view>

@@ -18,7 +18,7 @@ Component({
   properties: {},
   methods: {
     test() {
-      
+
     },
     user(e) {
       // console.log(this.getTabBar())
@@ -94,7 +94,7 @@ Component({
               wx.hideToast();
             }, 2000)
           }, 0);
-          
+
           let unioid = wx.getStorageSync('unionid')
           // 页面被展示
           // 在组件实例进入页面节点树时执行
@@ -110,15 +110,18 @@ Component({
               if (res.data.status == 200) {
                 console.log('登录成功')
                 wx.setStorageSync('user', res.data.user);
-                wx.setStorageSync('cookie', res.header['Set-Cookie']);
-                wx.setStorageSync('cookie', res.header['set-cookie']);
+                if (res.header['Set-Cookie'] != '' && res.header['Set-Cookie'] != null && res.header['Set-Cookie'] != undefined) {
+                  wx.setStorageSync('cookie', res.header['Set-Cookie']);
+                } else {
+                  wx.setStorageSync('cookie', res.header['set-cookie']);
+                }
                 // this.getTabBar().attached()
                 getApp().globalData.login_show = true
                 that.triggerEvent('myevent');
               }
 
             }
-            
+
           })
 
         } else {

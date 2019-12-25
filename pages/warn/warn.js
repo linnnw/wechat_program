@@ -13,6 +13,7 @@ Page({
         ipnval: ''
     },
     onLoad: function (options) {
+        console.log(this.getTabBar())
         // 生命周期函数--监听页面加载
         this.setData({
             show: getApp().globalData.login_show
@@ -46,7 +47,15 @@ Page({
         // perpage.onLoad()
     },
     onShow: function () {
+        // getCurrentPages()[getCurrentPages().length - 1].onLoad()
+        // console.log(123)
         // 生命周期函数--监听页面显示
+        if (this.data.show !== getApp().globalData.login_show) {
+            this.setData({
+              show: getApp().globalData.login_show
+            })
+            getCurrentPages()[getCurrentPages().length - 1].onLoad()
+          }
         this.getTabBar().setData({
             // current: 'setup'
             selected: 3

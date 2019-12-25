@@ -65,6 +65,10 @@ Component({
       this.setData({
         ['form.sign']: getApp().globalData._base64
       })
+      console.log(this.data.form)
+      if(this.data.form.data.length > 0) {
+        console.log('qq')
+      }
       // console.log(this.data.form.sign)
       // getApp().globalData._base64 = '';
       // 页面被展示
@@ -92,7 +96,7 @@ Component({
       this.setData({
         imagesrc: imglist
       })
-      console.log(this.data.imagesrc)
+      // console.log(this.data.imagesrc)
       let data = this.properties.handleData
       let shebei = this.properties.shebeiData
 
@@ -127,6 +131,7 @@ Component({
           ['form.data[' + i + '].hb_cost']: 0,
           ['form.data[' + i + '].cl_cost']: 0,
         })
+        // 计算总费用
         this.is_code(i, 'hb');
         this.is_code(i, 'cl');
       }
@@ -168,7 +173,7 @@ Component({
   },
   methods: {
     transferImageList(imageList) {
-      console.log(imageList)
+      // console.log(imageList)
       if (this.isEmpty(imageList)) return [];
       let temp_list = [];
       let tp = Array.isArray(imageList) ? imageList.map(i => i.url || i) : imageList.split(',');
@@ -581,6 +586,7 @@ Component({
         })
       }
     },
+    
     handlefd() {
       console.log(11)
       this.setData({
@@ -611,21 +617,29 @@ Component({
         ['form.draft_price']: e.detail.value
       })
     },
+    // 如果input为空把input赋值为0
+    ifValIsNull(index,key,val) {
+      if(this.isEmpty(val)){
+        this.setData({
+          [`form.data[${index}].${key}`]: 0
+        })
+      }else {
+        this.setData({
+          [`form.data[${index}].${key}`]: val
+        })
+      }
+    },
     // 本次黑白读数
     this_hb_reading(e) {
-      console.log(e)
       let index = e.currentTarget.dataset.index
-      this.setData({
-        ['form.data[' + index + '].this_hb_reading']: e.detail.value
-      })
+      this.ifValIsNull(index,'this_hb_reading',e.detail.value)
+      
       this.is_code(index, 'hb');
     },
     // 本次彩色读数
     this_cl_reading(e) {
       let index = e.currentTarget.dataset.index
-      this.setData({
-        ['form.data[' + index + '].this_cl_reading']: e.detail.value
-      })
+      this.ifValIsNull(index,'this_cl_reading',e.detail.value)
       this.is_code(index, 'cl');
     },
     // 判断是否为空
@@ -640,17 +654,13 @@ Component({
     // 黑白本次无效张数
     hb_invalid_num(e) {
       let index = e.currentTarget.dataset.index
-      this.setData({
-        ['form.data[' + index + '].hb_invalid_num']: e.detail.value
-      })
+      this.ifValIsNull(index,'hb_invalid_num',e.detail.value)
       this.is_code(index, 'hb')
     },
     // 彩色本次无效张数
     cl_invalid_num(e) {
       let index = e.currentTarget.dataset.index
-      this.setData({
-        ['form.data[' + index + '].cl_invalid_num']: e.detail.value
-      })
+      this.ifValIsNull(index,'cl_invalid_num',e.detail.value)
       this.is_code(index, 'cl')
     },
 

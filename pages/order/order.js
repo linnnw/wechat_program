@@ -52,7 +52,7 @@ Page({
         this.getdot();
         request._post('/workOrder/api/getDetailById', { "id": res.data.row.id, "type": res.data.row.type }, res => {
           console.log(res.data.list)
-          if(res.data.status == 200){
+          if (res.data.status == 200) {
             this.setData({
               shebeiData: res.data.list
             })
@@ -68,7 +68,7 @@ Page({
             // console.log(this.data.handleData)
           }
         })
-        
+
       }
     })
   },
@@ -102,7 +102,7 @@ Page({
       this.setData({
         show: getApp().globalData.login_show
       })
-      
+
       // 获取工单数据
       this.getwork();
 
@@ -154,6 +154,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (this.data.show !== getApp().globalData.login_show) {
+      this.setData({
+        show: getApp().globalData.login_show
+      })
+      getCurrentPages()[getCurrentPages().length - 1].onLoad()
+    }
     this.getTabBar().setData({
       // current: 'order'
       selected: 1

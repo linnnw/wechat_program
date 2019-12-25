@@ -13,7 +13,8 @@ var filter = {
     }
   },
   filterTime1: function (val) {
-    // val = val.replace(/-/g, "/");
+    var reg = getRegExp("-", "g"); // 获取正则表达式，全局替换
+    val = val.replace(reg, "/");
     return Date.parse(val);
 
   },

@@ -16,7 +16,7 @@
     <cover-view >实时信息</cover-view>
   </cover-view>
 
-  <cover-view class="tab-bar-item" wx:if="{{!show}}" data-path="/pages/warn/warn" data-index="3" bindtap="switchTab">
+  <cover-view class="tab-bar-item" data-path="/pages/warn/warn" data-index="3" bindtap="switchTab">
     <cover-image src="{{selected == 3?'/assets/icons/yujing1.png':'/assets/icons/yujing.png'}}"></cover-image>
     <cover-view >预警</cover-view>
   </cover-view>

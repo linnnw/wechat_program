@@ -8,23 +8,23 @@
 <view>
   <view class="li">
     <view class="span" bind:tap="jumpToCur" style="background-color: #69ceeb;">
-      <text style="margin: 10rpx;font-size: 32rpx;">{{chardata.regNum.name}}</text>
-      <view style="text-align: center;font-size: 40rpx;">{{chardata.regNum.num}}</view>
+      <text>{{chardata.regNum.name}}</text>
+      <view>{{chardata.regNum.num}}</view>
     </view>
     <view class="span" bind:tap="jumpToCur" style="background-color: #f08e2f;">
-      <text style="margin: 10rpx;font-size: 32rpx;">当前在线数</text>
-      <view style="text-align: center;font-size: 40rpx;">{{chardata.onLineNum.num}}</view>
+      <text>当前在线数</text>
+      <view>{{chardata.onLineNum.num}}</view>
     </view>
   </view>
   <view class="li">
     <view class="span" bind:tap="jumpToCur" style="background-color: #3391fb;">
-      <text style="margin: 10rpx;font-size: 32rpx;">打印情况</text>
-      <view style="text-align: center;font-size: 30rpx;">{{chardata.printNum.bp.name}}: {{chardata.printNum.bp.num}}</view>
-      <view style="text-align: center;font-size: 30rpx;">{{chardata.printNum.cp.name}}: {{chardata.printNum.cp.num}}</view>
+      <text>打印情况</text>
+      <view style="font-size: 28rpx;">{{chardata.printNum.bp.name}}: {{chardata.printNum.bp.num}}页</view>
+      <view style="font-size: 28rpx;">{{chardata.printNum.cp.name}}: {{chardata.printNum.cp.num}}页</view>
     </view>
     <view class="span" bind:tap="jumpToCur" style="background-color: #fb6d52;">
-      <text style="margin: 10rpx;font-size: 32rpx;">总故障数</text>
-      <view style="text-align: center;font-size: 40rpx;">{{chardata.faultNum.num}}</view></view>
+      <text>总提醒数</text>
+      <view>{{chardata.faultNum.num}}</view></view>
   </view>
 </view>
 <view class="echar">

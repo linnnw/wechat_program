@@ -516,6 +516,38 @@ Component({
         })
         return
       }
+      if (!/^\d+$/.test(this.data.form.repair_price)) {
+        wx.showModal({
+          title: '提示',
+          content: '维修费填写有误',
+          showCancel: false
+        })
+        return
+      }
+      if (!/^\d+$/.test(this.data.form.additional_price)) {
+        wx.showModal({
+          title: '提示',
+          content: '附加费填写有误',
+          showCancel: false
+        })
+        return
+      }
+      if (!/^\d+$/.test(this.data.form.hb_reading)) {
+        wx.showModal({
+          title: '提示',
+          content: '黑白读数填写有误',
+          showCancel: false
+        })
+        return
+      }if (!/^\d+$/.test(this.data.form.cl_reading)) {
+        wx.showModal({
+          title: '提示',
+          content: '彩色读数填写有误',
+          showCancel: false
+        })
+        return
+      }
+
       for (let i of this.data.form.data) {
         if (this.isEmpty(i.pay_method)) {
           wx.showModal({
@@ -617,6 +649,7 @@ Component({
       console.log(parseFloat(this.data.form.additional_price))
       console.log(this.ifnull(parseFloat(this.data.form.repair_price)) + this.ifnull(parseFloat(this.data.form.additional_price)))
     },
+    
     // input点击事件
     val(e) {
       // console.log(e)
@@ -624,16 +657,24 @@ Component({
         remark: e.detail.value
       })
     },
+    // 如果input为空把input赋值为0
+    ifValIsNull(key,val) {
+      if(this.isEmpty(val)){
+        this.setData({
+          [`form.${key}`]: 0
+        })
+      }else {
+        this.setData({
+          [`form.${key}`]: val
+        })
+      }
+    },
     repair_price(e) {
-      this.setData({
-        ['form.repair_price']: e.detail.value
-      })
+      this.ifValIsNull('repair_price',e.detail.value)
       this.setFinal_price();
     },
     additional_price(e) {
-      this.setData({
-        ['form.additional_price']: e.detail.value
-      })
+      this.ifValIsNull('additional_price',e.detail.value)
       this.setFinal_price()
     },
     handle_result(e) {
@@ -643,14 +684,10 @@ Component({
       })
     },
     hb_reading(e) {
-      this.setData({
-        ['form.hb_reading']: e.detail.value
-      })
+      this.ifValIsNull('hb_reading',e.detail.value)
     },
     cl_reading(e) {
-      this.setData({
-        ['form.cl_reading']: e.detail.value
-      })
+      this.ifValIsNull('cl_reading',e.detail.value)
     },
     draft_price(e) {
       this.setData({

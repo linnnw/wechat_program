@@ -40,7 +40,7 @@
 .dot {
   position: absolute;
   top: 10rpx;
-  left: 300rpx;
+  left: 242rpx;
   width: 20rpx;
   height: 20rpx;
   border-radius: 50%;
