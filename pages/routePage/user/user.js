@@ -6,7 +6,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        userdata: []
+        userdata: [],
+        currentUsername: []
     },
     selectUser(e) {
         console.log(e.currentTarget.dataset.oid)
@@ -95,10 +96,12 @@ Page({
     },
     getUserData() { /* 获取数据 */
         request._post('/getUser', { "page": 1, "pageSize": 15 }, res => {
-            console.log(res)
+            // console.log(res)
             this.setData({
-                userdata: res.data.tableData
+                userdata: res.data.tableData,
+                currentUsername: wx.getStorageSync('user').name
             })
+            console.log(this.data.currentUsername)
         })
 
         // var that = this;

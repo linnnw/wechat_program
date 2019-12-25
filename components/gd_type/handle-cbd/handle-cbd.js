@@ -62,13 +62,13 @@ Component({
   },
   pageLifetimes: {
     show: function () {
+      if(this.data.form.data.length == 0) {
+        getCurrentPages()[getCurrentPages().length - 1].onLoad()
+      }
       this.setData({
         ['form.sign']: getApp().globalData._base64
       })
-      console.log(this.data.form)
-      if(this.data.form.data.length > 0) {
-        console.log('qq')
-      }
+      
       // console.log(this.data.form.sign)
       // getApp().globalData._base64 = '';
       // 页面被展示
@@ -126,6 +126,8 @@ Component({
       this.setData({
         ['form.data']: shebei
       })
+      // console.log(this.data.form)
+      console.log(this.data.form.data)
       for (let i = 0; i < this.data.form.data.length; i++) {
         this.setData({
           ['form.data[' + i + '].hb_cost']: 0,

@@ -1,13 +1,14 @@
 <view class="user">
     <nav>
         <view slot="right">
-            <input type="text" class="ipn" placeholder="名称" />
             <text class="admin">用户管理</text>
+            <input type="text" class="ipn" placeholder="名称" />
+            
         </view>
     </nav>
     <view class="user">
     
-        <view class="userItem" wx:for="{{userdata}}" wx:key="{{index}}">
+        <view class="userItem" wx:for="{{userdata}}" wx:key="{{index}}" wx:if="{{item.name !== currentUsername}}">
             <view class="userItem_info">
                 <image class='sizeModal-img' mode='aspectFill' src='{{item.avatar}}'></image>
                 <text class="li">{{item.name}}</text>

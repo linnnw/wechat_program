@@ -54,7 +54,7 @@ Page({
             this.setData({
               show: getApp().globalData.login_show
             })
-            getCurrentPages()[getCurrentPages().length - 1].onLoad()
+            this.getWarnData();
           }
         this.getTabBar().setData({
             // current: 'setup'

@@ -56,7 +56,7 @@ Page({
             this.setData({
               shebeiData: res.data.list
             })
-            // console.log(this.data.shebeiData)
+            console.log(this.data.shebeiData)
           }
         })
         request._post('/workOrder/api/getById', { "id": res.data.row.id, "type": res.data.row.type }, res => {
@@ -97,7 +97,7 @@ Page({
     let user = wx.getStorageSync('user');
     // console.log(user.status)
     if (user.status == 1) {
-      console.log(11)
+      // console.log(11)
       getApp().globalData.login_show = true
       this.setData({
         show: getApp().globalData.login_show
@@ -105,7 +105,6 @@ Page({
 
       // 获取工单数据
       this.getwork();
-
       //获取处理中数据
       this.gethandle();
 
@@ -158,7 +157,8 @@ Page({
       this.setData({
         show: getApp().globalData.login_show
       })
-      getCurrentPages()[getCurrentPages().length - 1].onLoad()
+      this.getwork();
+      this.gethandle();
     }
     this.getTabBar().setData({
       // current: 'order'

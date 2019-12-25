@@ -54,16 +54,16 @@
 
 .ipn {
     height: 50rpx;
-    width: 200rpx;
+    width: 450rpx;
     border-bottom: 1px solid #999;
     float: right;
-    margin-right: 200rpx;
+    margin-right: 15rpx;
     margin-top: 10rpx;
 }
 
 .admin {
     position: absolute;
     top: 16rpx;
-    right: 0;
+    left: -200rpx;
     font-weight: 700;
 }
