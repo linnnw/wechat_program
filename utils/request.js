@@ -13,8 +13,7 @@ const http = (method, url, data, response, error) => {
 
   wx.request({
     method: method,
-    // url: "https://51tianyihui.cn/wxv2" + url,
-    url: "http://192.168.0.188:3013/wxv2" + url,
+    url: url,
     header: {
       'content-type': 'application/json',
       // 'token': wx.getStorageSync("token")
