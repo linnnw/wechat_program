@@ -1,24 +1,32 @@
+
 <view class="user">
-    <nav>
+    
+    <nav class="nav">
         <view slot="right">
             <text class="admin">用户管理</text>
-            <input type="text" class="ipn" placeholder="名称" />
-            
+            <input type="text" class="ipn" placeholder="名称" value="{{name}}" bindinput="name" bindconfirm="search" />
+
         </view>
     </nav>
-    <view class="user">
     
-        <view class="userItem" wx:for="{{userdata}}" wx:key="{{index}}" wx:if="{{item.name !== currentUsername}}">
-            <view class="userItem_info">
-                <image class='sizeModal-img' mode='aspectFill' src='{{item.avatar}}'></image>
-                <text class="li">{{item.name}}</text>
-                <text class="li">{{item.regtime}}</text>
-            </view>
-            <view class="operation">
-                <text class="iconfont iconicon-  {{item.isadmin == 2? 'colorstyle': ''}}" data-oid="{{item.oid}}" data-isadmin="{{item.isadmin}}" bind:tap="selectUser"></text>
-                <text class="iconfont iconshoucang {{item.ischeck == 2? 'colorstyle': ''}}" data-oid="{{item.oid}}" data-ischeck="{{item.ischeck}}" bind:tap="selectColl"></text>
-            </view>
-        </view>
     
-    </view>
+        <wux-refresher class="wux_ref" id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh"
+            bind:loadmore="onLoadmore" scrollTop="{{scrollTop}}">
+
+            <view class="userItem" wx:for="{{userdata}}" wx:key="{{index}}" wx:if="{{item.name !== currentUsername}}">
+                <view class="userItem_info">
+                    <image class='sizeModal-img' mode='aspectFill' src='{{item.avatar}}'></image>
+                    <text class="li">{{item.name}}</text>
+                    <text class="li">{{item.regtime}}</text>
+                </view>
+                <view class="operation">
+                    <text class="iconfont iconicon-  {{item.isadmin == 2? 'colorstyle': ''}}" data-oid="{{item.oid}}"
+                        data-isadmin="{{item.isadmin}}" bind:tap="selectUser"></text>
+                    <text class="iconfont iconshoucang {{item.ischeck == 2? 'colorstyle': ''}}" data-oid="{{item.oid}}"
+                        data-ischeck="{{item.ischeck}}" bind:tap="selectColl"></text>
+                </view>
+            </view>
+
+        </wux-refresher>
+ 
 </view>

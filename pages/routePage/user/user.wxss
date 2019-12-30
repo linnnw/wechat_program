@@ -1,5 +1,13 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
 .user {
     font-size: 28rpx;
+    padding-top: 90rpx;
 }
 .userItem {
     margin: 20rpx;

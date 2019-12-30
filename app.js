@@ -6,8 +6,8 @@ App({
 
     login_show: false,
     dot: false,
-    
-    url: 'url',
+    // url: "https://51tianyihui.cn/wxv2",
+    url: 'http://192.168.0.188:3013/wxv2',
     _base64: '',
     api: '/workOrder/api',
     commonField: () => ({

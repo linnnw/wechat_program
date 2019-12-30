@@ -95,3 +95,11 @@
     box-sizing: border-box;
     box-shadow: 1px 3px 7px rgba(110, 110, 110, .6);
 }
+.yichuli {
+    position: absolute;
+    top: 160rpx;
+    right: 20rpx;
+    font-size: 130rpx;
+    color: #51c871;
+    opacity: .8;
+}

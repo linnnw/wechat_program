@@ -14,7 +14,7 @@
     
         <form bindsubmit="formSubmit" class="">
     
-            <view class="title">打印机ip</view>
+            <view class="title">打印机IP</view>
             <input type="text" name='ip' value="{{ip}}" bindinput="ip" />
     
             <view class="title">设备名称</view>

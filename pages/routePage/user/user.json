@@ -1,5 +1,7 @@
 {
     "usingComponents": {
-        "nav": "../../components/nav/nav"
+        "nav": "../../components/nav/nav",
+        "wux-refresher": "../../dist/refresher/index",
+        "wux-search-bar": "../../dist/search-bar/index"
     }
 }

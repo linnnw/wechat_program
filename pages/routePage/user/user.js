@@ -1,4 +1,5 @@
 import request from '../../../utils/request.js'
+import { $stopWuxRefresher, $stopWuxLoader } from '../../../dist/index'
 // pages/user/user.js
 Page({
 
@@ -6,8 +7,13 @@ Page({
      * 页面的初始数据
      */
     data: {
+        items: [],
+        count: 0,
+        scrollTop: 0,
         userdata: [],
-        currentUsername: []
+        currentUsername: [],
+        name: '',
+        page: 1
     },
     selectUser(e) {
         console.log(e.currentTarget.dataset.oid)
@@ -39,20 +45,6 @@ Page({
         })
 
 
-        // let that = this;
-        // let index = e.currentTarget.dataset.index
-        // index += 1;
-        // wx.request({
-        //     url: 'http://192.168.0.100:9999/admin/api/usergz',
-        //     data: { id: index },
-        //     method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        //     // header: {}, // 设置请求的 header
-        //     success: function(res) {
-        //         // success
-        //         that.getUserData();
-        //     }
-        // })
-
     },
     selectColl(e) {
         let oid = e.currentTarget.dataset.oid;
@@ -80,44 +72,63 @@ Page({
             }
         })
 
-        // let that = this;
-        // let index = e.currentTarget.dataset.index
-        // index += 1;
-        // wx.request({
-        //     url: 'http://192.168.0.100:9999/admin/api/usersc',
-        //     data: { id: index },
-        //     method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        //     // header: {}, // 设置请求的 header
-        //     success: function (res) {
-        //         // success
-        //         that.getUserData();
-        //     }
-        // })
+    },
+    name(e) {
+        // console.log(e)
+        this.setData({
+            name: e.detail.value
+        })
+    },
+    search() {
+        this.getUserData();
+    },
+    onPageScroll(e) {
+        this.setData({
+          scrollTop: e.scrollTop
+        })
+      },
+    // 下拉刷新
+    onRefresh() {
+        // console.log('onRefresh')
+        this.getUserData();
+        $stopWuxRefresher()
+    },
+    onLoadmore() {
+        this.setData({
+            page: this.data.page += 1
+        })
+        request._post('/getUser', { "page": this.data.page, name: this.data.name, ownerName: wx.getStorageSync('user').name, "pageSize": 15 }, res => {
+            // console.log(res.data.tableData);
+            if (res.data.tableData.length > 0) {
+
+                this.setData({
+                    userdata: this.data.userdata.concat(res.data.tableData)
+                })
+                $stopWuxLoader()
+                // console.log(this.data.real)
+            } else {
+                $stopWuxLoader('#wux-refresher', this, true)
+            }
+
+        })
+        console.log('onLoadmore')
+
     },
     getUserData() { /* 获取数据 */
-        request._post('/getUser', { "page": 1, "pageSize": 15 }, res => {
+        this.setData({
+            page: 1
+        })
+        request._post('/getUser', { "page": this.data.page, name: this.data.name, ownerName: wx.getStorageSync('user').name, "pageSize": 10 }, res => {
             // console.log(res)
             this.setData({
                 userdata: res.data.tableData,
-                currentUsername: wx.getStorageSync('user').name
+                currentUsername: wx.getStorageSync('user').name,
             })
             console.log(this.data.currentUsername)
         })
 
-        // var that = this;
-        // wx.request({
-        //     url: 'http://192.168.0.100:9999/admin/api/queryuser',
-        //     data: {},
-        //     method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        //     // header: {}, // 设置请求的 header
-        //     success: function(res) {
-        //         // success
-        //         that.setData({
-        //             userdata: res.data
-        //         })
-        //     }
-        // })
     },
+
     /**
      * 生命周期函数--监听页面加载
      */

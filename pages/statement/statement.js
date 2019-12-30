@@ -48,6 +48,11 @@ Page({
   },
   // 获取echarts数据
   getEchartsData() {
+
+    wx.showLoading({
+      title: '加载中',
+    })
+
     request._post('/getChartData', {}, res => {
       console.log(res)
       this.setData({
@@ -90,6 +95,9 @@ Page({
           xs: chartdata.xs_contract.data,
           zl: chartdata.zl_contract.data
         }
+        wx.hideLoading();
+      } else {
+        wx.hideLoading();
       }
 
       this.setData({

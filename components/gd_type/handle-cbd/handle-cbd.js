@@ -1,5 +1,6 @@
 // const gd_method = require('../../../utils/gd_method')
 import request from '../../../utils/request.js'
+import gd_utils from '../../../utils/util.js'
 const PARAMETER = {
   OSS_PREFIX: 'https://yunqi-file.oss-cn-shenzhen.aliyuncs.com/',
   WEB_HOST: 'http://localhost:3012/yc',
@@ -34,7 +35,7 @@ Component({
     val1: '请选择到达时间',
     val2: '请选择离开时间',
     lang: 'zh_CN',
-    price_arr: [], //总金额计算
+    price_arr: [], //用来储存每一台的最终价格 最后相加计算总金额
     form: {
       ...getApp().globalData.commonField(),
       type: 'cbd',
@@ -645,6 +646,11 @@ Component({
       this.is_code(index, 'cl');
     },
     // 判断是否为空
+    /**
+     * @param 判断是否为空
+     * @param {*} val 
+     * @return 返回布尔类型
+     */
     isEmpty(val) {
       return val == '' || val == null || val == undefined || val == NaN
     },
@@ -821,7 +827,11 @@ Component({
       console.log(this.data.price_arr)
     },
 
-    // 固定计费
+    /**
+     * 固定计费
+     * @param {*} index 
+     * @param {*} type 
+     */
     code_5(index, type) {
       this.setData({
         ['form.data[' + index + '].' + type + '_cost']: 0
@@ -836,7 +846,9 @@ Component({
       console.log(this.data.price_arr)
     },
 
-    // 最终价格计算
+    /**
+     * 最终价格计算
+     */
     final_price() {
       let price = 0
       this.data.price_arr.forEach(item => {
@@ -847,7 +859,12 @@ Component({
       })
       // console.log(this.data.form.final_price)
     },
-    // 判断是哪种计数规则
+
+    /**
+     * 判断是哪种计数规则,5中计费规则对应字段price_model的1，2，3，4，5
+     * @param {*} index 数组索引
+     * @param {*} type 计数器类型，有hb或cl
+     */
     is_code(index, type) {
       switch (this.data.form.data[index].price_model) {
         case 1:

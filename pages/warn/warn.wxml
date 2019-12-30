@@ -54,6 +54,7 @@
                     <view class="option"></view>
                 </view>
                 <text class="handle iconfont iconbanshou" data-devid="{{item.devid}}" hidden="{{item.deal}}" bindtap="handlewarn">处理</text>
+                <text class="yichuli iconfont iconyichuli" hidden="{{!item.deal}}"></text>
                 <view class="title">
                     <text class="iconfont icondayinji"> 碳 粉</text>
                 </view>
